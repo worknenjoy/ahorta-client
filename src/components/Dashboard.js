@@ -10,13 +10,13 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import SimpleLineChart from './SimpleLineChart';
 import Months from './common/Months';
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import WifiConnected from '@material-ui/icons/Wifi';
 import Loading from './common/Loading';
 
 import Topbar from './Topbar';
 
 const numeral = require('numeral');
-numeral.defaultFormat('0,000');
+numeral.defaultFormat('0');
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -115,8 +115,8 @@ class Dashboard extends Component {
 
   state = {
     loading: true,
-    amount: 15000,
-    period: 3,
+    amount: 1,
+    period: 12,
     start: 0,
     monthlyInterest: 0,
     totalInterest: 0,
@@ -186,7 +186,7 @@ class Dashboard extends Component {
                   </div>
                   <div>
                     <Button variant="outlined" className={classes.outlinedButtom}>
-                      Get help
+                      How it works?
                     </Button>
                   </div>
                 </div>
@@ -195,34 +195,34 @@ class Dashboard extends Component {
                 <Paper className={classes.paper}>
                   <div>
                     <Typography variant="subtitle1" gutterBottom>
-                      How much you want to transfer
+                      How often you like to be notified
                     </Typography>
                     <Typography variant="body1">
-                      Use slider to set the amount you need.
+                      Use sliders to set the period for be notified.
                     </Typography>
                     <div className={classes.blockCenter}>
                       <Typography color='secondary' variant="h6" gutterBottom>
-                        {numeral(amount).format()} USD
+                        from {numeral(amount).format()} to {numeral(amount).format()} hours
                       </Typography>
                     </div>
                     <div>
                       <Slider
                         value={amount}
-                        min={20000}
-                        max={150000}
-                        step={15000}
+                        min={1}
+                        max={24}
+                        step={1}
                         onChange={this.handleChangeAmount}
                       />
                     </div>
                     <div className={classes.rangeLabel}>
                       <div>
                         <Typography variant="subtitle2">
-                          15,000 USD
+                          1 hour
                         </Typography>
                       </div>
                       <div>
                         <Typography variant="subtitle2">
-                          150,000 USD
+                          24 hours
                         </Typography>
                       </div>
                     </div>
@@ -233,21 +233,21 @@ class Dashboard extends Component {
                 <Paper className={classes.paper}>
                   <div>
                     <Typography variant="subtitle1" gutterBottom>
-                      Period
+                      Visualization period
                     </Typography>
                     <Typography variant="body1">
-                      A sample period
+                      Show in the graph the last period in hours
                     </Typography>
                     <div className={classes.blockCenter}>
                       <Typography color='secondary' variant="h6" gutterBottom>
-                        {period} months
+                        {period} hours
                       </Typography>
                     </div>
                     <div>
                       <Slider
                         value={period}
                         min={1}
-                        max={6}
+                        max={24}
                         step={1}
                         onChange={this.handleChangePeriod}
                       />
@@ -255,12 +255,12 @@ class Dashboard extends Component {
                     <div className={classes.rangeLabel}>
                       <div>
                         <Typography variant="subtitle2">
-                          1 month
+                          1 hour
                         </Typography>
                       </div>
                       <div>
                         <Typography variant="subtitle2">
-                          6 months
+                          24 hours
                         </Typography>
                       </div>
                     </div>
@@ -347,20 +347,20 @@ class Dashboard extends Component {
                   <Loading loading={loading} />
                   <div className={loading ? classes.loadingState : ''}>
                     <Typography variant="subtitle1" gutterBottom>
-                      State
+                      Communication with your device
                     </Typography>
                     <div className={classes.mainBadge}>
-                      <VerifiedUserIcon style={{fontSize: 72}} fontSize={'large'} color={'secondary'} />
+                      <WifiConnected style={{fontSize: 72}} fontSize={'large'} color={'secondary'} />
                       <Typography variant="h5" color={'secondary'} gutterBottom>
-                        Verified
+                        Connected
                       </Typography>
                     </div>
                     <div className={classes.buttonBar}>
                       <Button to={{ pathname: "/dashboard", search: `?type=save` }} component={Link} variant="outlined" className={classes.actionButtom}>
-                        Save
+                        Networks
                       </Button>
                       <Button to={{ pathname: "/dashboard", search: `?type=apply` }} component={Link} color='primary' variant="contained" className={classes.actionButtom}>
-                        Apply
+                        Update
                       </Button>
                     </div>
                   </div>
