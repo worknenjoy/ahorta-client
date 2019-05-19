@@ -14,6 +14,8 @@ import WifiConnected from '@material-ui/icons/Wifi';
 import Loading from './common/Loading';
 
 import Topbar from './Topbar';
+import SensorChart from './SensorChart'
+import TimeChart from './TimeChart'
 
 const numeral = require('numeral');
 numeral.defaultFormat('0');
@@ -117,7 +119,7 @@ class Dashboard extends Component {
     loading: true,
     amount: 1,
     period: 12,
-    start: 0,
+    start: 10,
     monthlyInterest: 0,
     totalInterest: 0,
     monthlyPayment: 0,
@@ -271,21 +273,21 @@ class Dashboard extends Component {
                 <Paper className={classes.paper}>
                   <div>
                     <Typography variant="subtitle1" gutterBottom>
-                      Start date
+                      Threshold
                     </Typography>
                     <Typography variant="body1">
-                      Set your preferred start date.
+                      What's the target humidity for this plant?
                     </Typography>
                     <div className={classes.blockCenter}>
                       <Typography color='secondary' variant="h6" gutterBottom>
-                        {monthRange[start]}
+                        {start} %
                       </Typography>
                     </div>
                     <div>
                       <Slider
                         value={start}
                         min={0}
-                        max={5}
+                        max={100}
                         step={1}
                         onChange={this.handleChangeStart}
                       />
@@ -293,12 +295,12 @@ class Dashboard extends Component {
                     <div className={classes.rangeLabel}>
                       <div>
                         <Typography variant="subtitle2">
-                          Dec 2018
+                          0 %
                         </Typography>
                       </div>
                       <div>
                         <Typography variant="subtitle2">
-                          May 2019
+                          100 %
                         </Typography>
                       </div>
                     </div>
@@ -336,36 +338,55 @@ class Dashboard extends Component {
                           </Typography>
                         </div>
                       </div>
-                      <div >
+                      <div>
                         <SimpleLineChart data={data} />
                       </div>
                     </div>
                   </Paper>
               </Grid>
               <Grid item xs={12} md={4}>
-                <Paper className={classes.paper} style={{position: 'relative'}}>
-                  <Loading loading={loading} />
-                  <div className={loading ? classes.loadingState : ''}>
+                  <Paper className={classes.paper} style={{position: 'relative'}}>
+                    <Loading loading={loading} />
                     <Typography variant="subtitle1" gutterBottom>
-                      Communication with your device
+                      Some details
                     </Typography>
-                    <div className={classes.mainBadge}>
-                      <WifiConnected style={{fontSize: 72}} fontSize={'large'} color={'secondary'} />
-                      <Typography variant="h5" color={'secondary'} gutterBottom>
-                        Connected
-                      </Typography>
-                    </div>
-                    <div className={classes.buttonBar}>
-                      <Button to={{ pathname: "/dashboard", search: `?type=save` }} component={Link} variant="outlined" className={classes.actionButtom}>
-                        Networks
-                      </Button>
-                      <Button to={{ pathname: "/dashboard", search: `?type=apply` }} component={Link} color='primary' variant="contained" className={classes.actionButtom}>
-                        Update
-                      </Button>
-                    </div>
-                  </div>
+                    <Typography variant="body1">
+                      Details about the graph
+                    </Typography>
+                    <SensorChart />
                   </Paper>
-                </Grid>
+              </Grid>
+              </Grid>
+              <Grid item xs={12} md={8}>
+                <Paper className={classes.paper}>
+                  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <TimeChart />
+                  </div>
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                  <Paper className={classes.paper} style={{position: 'relative'}}>
+                    <Loading loading={loading} />
+                    <div className={loading ? classes.loadingState : ''}>
+                      <Typography variant="subtitle1" gutterBottom>
+                        Communication with your device
+                      </Typography>
+                      <div className={classes.mainBadge}>
+                        <WifiConnected style={{fontSize: 72}} fontSize={'large'} color={'secondary'} />
+                        <Typography variant="h5" color={'secondary'} gutterBottom>
+                          Connected
+                        </Typography>
+                      </div>
+                      <div className={classes.buttonBar}>
+                        <Button to={{ pathname: "/dashboard", search: `?type=save` }} component={Link} variant="outlined" className={classes.actionButtom}>
+                          Networks
+                        </Button>
+                        <Button to={{ pathname: "/dashboard", search: `?type=apply` }} component={Link} color='primary' variant="contained" className={classes.actionButtom}>
+                          Update
+                        </Button>
+                      </div>
+                    </div>
+                  </Paper>
               </Grid>
             </Grid>
           </Grid>

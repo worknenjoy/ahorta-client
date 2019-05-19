@@ -14,10 +14,11 @@ function SimpleLineChart(props) {
         <XAxis dataKey="name"/>
         <Tooltip/>
         <Bar dataKey="Type" stackId="a" fill={theme.palette.primary.main} />
-        <Bar dataKey="OtherType" stackId="a" fill={theme.palette.secondary.light} />
       </BarChart>
     </ResponsiveContainer>
   );
 }
 
 export default withTheme()(SimpleLineChart);
+
+// <Bar dataKey="OtherType" stackId="a" fill={theme.palette.secondary.light} />

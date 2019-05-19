@@ -23,6 +23,10 @@ const styles = theme => ({
     boxShadow: 'none',
     borderBottom: `1px solid ${theme.palette.grey['100']}`,
     backgroundColor: 'white',
+    [theme.breakpoints.up('md')]: {
+      paddingRigth: 120,
+      paddingLeft: 120
+    }
 
   },
   inline: {
