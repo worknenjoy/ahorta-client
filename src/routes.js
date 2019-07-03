@@ -1,18 +1,16 @@
 import React from 'react'
 import { Route, HashRouter, Switch, Redirect } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
-import Wizard from './components/Wizard'
-import Cards from './components/Cards'
-// import Main from './components/Main'
-import Signup from './components/Signup'
+import Devices from './components/Devices'
 import ScrollToTop from './components/ScrollTop'
 
 export default props => (
     <HashRouter>
       <ScrollToTop>
         <Switch>
-          <Route exact path='/dashboard' component={ Dashboard } />
-          <Redirect path='/' to='/dashboard' />
+          <Route exact path='/devices' component={ Devices } />
+          <Route exact path='/dashboard/:id' component={ Dashboard } />
+          <Redirect path='/' to='/devices' />
         </Switch>
       </ScrollToTop>
     </HashRouter>
