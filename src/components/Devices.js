@@ -27,8 +27,11 @@ const styles = theme => ({
 
 class Devices extends Component {
 
+  state = {
+    data: []
+  }
+
   componentDidMount() {
-    console.log('secret', process.env.REACT_APP_SECRET)
     axios.get(`https://ahorta.herokuapp.com/devices`,
       {
         headers: {
@@ -39,6 +42,7 @@ class Devices extends Component {
     )
     .then((response) => {
       console.log('response', response);
+      this.setState({data: response.data})
     })
     .catch(error => {
       console.log(error);
@@ -46,7 +50,8 @@ class Devices extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
+    const { data } = this.state
     const currentPath = this.props.location.pathname
 
     return (
@@ -55,10 +60,16 @@ class Devices extends Component {
         <Topbar currentPath={currentPath} />
         <div className={classes.root}>
           <Grid container justify="center"> 
-            <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>
+            <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>            
               <Grid item xs={12}>
                 <SectionHeader title="Cards" subtitle="One page with a list of a collection" />
-                <CardItem />
+                {data.map(r =>  {
+                  return (
+                    <div style={{marginTop: 20}}>
+                      <CardItem />
+                    </div>
+                    )
+                  })}
               </Grid>
             </Grid>
           </Grid>
