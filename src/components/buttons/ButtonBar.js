@@ -17,8 +17,10 @@ const styles = theme => ({
 
 class ButtonBar extends Component {
 
+  
+
   render() {
-    const { classes } = this.props;
+    const { classes, onAction } = this.props;
 
     return (
       <div className={classes.spaceTop}>
@@ -28,11 +30,12 @@ class ButtonBar extends Component {
           Delete
         </Button>
         <Button
+          onClick={onAction}
           variant="contained"
           color="primary"
           className={classes.secondary}
         >
-          Edit
+          View Dashboard
         </Button>
       </div>
     )

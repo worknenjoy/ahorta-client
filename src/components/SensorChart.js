@@ -64,9 +64,9 @@ export default class SensorChart extends PureComponent {
   };
 
   onPieEnter = (data, index) => {
-    this.setState({
+    /*this.setState({
       activeIndex: index,
-    });
+    });*/
   };
 
   render() {
@@ -76,9 +76,9 @@ export default class SensorChart extends PureComponent {
           activeIndex={this.state.activeIndex}
           activeShape={renderActiveShape}
           data={data}
-          cx={200}
+          cx={140}
           cy={200}
-          innerRadius={60}
+          innerRadius={40}
           outerRadius={80}
           fill="#388e3c"
           dataKey="value"

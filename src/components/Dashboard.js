@@ -1,21 +1,22 @@
 import React,  { Component } from 'react';
+import axios from 'axios';
+import moment from 'moment';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Chip from '@material-ui/core/Chip';
 import Slider from '@material-ui/lab/Slider';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import SimpleLineChart from './SimpleLineChart';
 import Months from './common/Months';
-import WifiConnected from '@material-ui/icons/Wifi';
 import Loading from './common/Loading';
 
 import Topbar from './Topbar';
 import SensorChart from './SensorChart'
-import TimeChart from './TimeChart'
 
 const numeral = require('numeral');
 numeral.defaultFormat('0');
@@ -116,7 +117,8 @@ const monthRange = Months;
 class Dashboard extends Component {
 
   state = {
-    loading: true,
+    device: {},
+    loading: false,
     amount: 1,
     period: 12,
     start: 10,
@@ -147,6 +149,22 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    const dashboardId = this.props.match.params.id
+    axios.get(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
+      {
+        headers: {
+          'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    .then((response) => {
+      console.log('response', response);
+      this.setState({device: response.data})
+    })
+    .catch(error => {
+      console.log(error);
+    });
     this.updateValues();
   }
 
@@ -168,7 +186,7 @@ class Dashboard extends Component {
   render() {
     const { classes } = this.props;
     const { amount, period, start, monthlyPayment,
-      monthlyInterest, data, loading } = this.state;
+      monthlyInterest, data, loading, device } = this.state;
     const currentPath = this.props.location.pathname
 
     return (
@@ -177,13 +195,19 @@ class Dashboard extends Component {
         <Topbar currentPath={currentPath} />
         <div className={classes.root}>
           <Grid container justify="center">
-            <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>
+            <Grid spacing={24} alignItems="flex-start" justify="center" container className={classes.grid}>
               <Grid item xs={12}>
                 <div className={classes.topBar}>
                   <div className={classes.block}>
-                    <Typography variant="h6" gutterBottom>Dashboard</Typography>
+                    <small>name:</small>
+                    <Typography variant="h4" gutterBottom>
+                      { device && device.name } <Chip style={{marginLeft: 10}} variant='outlined' color='primary' label="Public" />
+                    </Typography>
                     <Typography variant="body1">
-                      Adjust and play with our sliders.
+                      Created { device && moment(device.createdAt).fromNow() }
+                    </Typography>
+                    <Typography variant="body1">
+                      Device ID: <strong>{ device && device.deviceId }</strong>
                     </Typography>
                   </div>
                   <div>
@@ -307,86 +331,55 @@ class Dashboard extends Component {
                   </div>
                 </Paper>
               </Grid>
-              <Grid container spacing={24} justify="center">
-                <Grid item xs={12} md={8} >
-                  <Paper className={classes.paper} style={{position: 'relative'}}>
-                    <Loading loading={loading} />
-                    <div className={loading ? classes.loadingState : ''}>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Some details
-                      </Typography>
-                      <Typography variant="body1">
-                        Details about the graph
-                      </Typography>
-                      <div style={{marginTop: 14, marginBottom: 14}}>
-                        <div className={classes.inlining}>
-                          <Avatar className={classes.loanAvatar}></Avatar>
-                          <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
-                            Type
-                          </Typography>
-                          <Typography className={classes.inlining} color='secondary' variant="h6" gutterBottom>
-                            {numeral(monthlyPayment).format()} units
-                          </Typography>
-                        </div>
-                        <div className={classes.inlining}>
-                          <Avatar className={classes.interestAvatar}></Avatar>
-                          <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
-                            Othe type
-                          </Typography>
-                          <Typography className={classes.inlining} color="secondary" variant="h6" gutterBottom>
-                            {numeral(monthlyInterest).format()} units
-                          </Typography>
-                        </div>
-                      </div>
-                      <div>
-                        <SimpleLineChart data={data} />
-                      </div>
-                    </div>
-                  </Paper>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                  <Paper className={classes.paper} style={{position: 'relative'}}>
-                    <Loading loading={loading} />
+              <Grid item xs={12} md={8} >
+                <Paper className={classes.paper} style={{position: 'relative'}}>
+                  <Loading loading={loading} />
+                  <div className={loading ? classes.loadingState : ''}>
                     <Typography variant="subtitle1" gutterBottom>
                       Some details
                     </Typography>
                     <Typography variant="body1">
                       Details about the graph
                     </Typography>
-                    <SensorChart />
-                  </Paper>
-              </Grid>
-              </Grid>
-              <Grid item xs={12} md={8}>
-                <Paper className={classes.paper}>
-                  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <TimeChart />
-                  </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                  <Paper className={classes.paper} style={{position: 'relative'}}>
-                    <Loading loading={loading} />
-                    <div className={loading ? classes.loadingState : ''}>
-                      <Typography variant="subtitle1" gutterBottom>
-                        Communication with your device
-                      </Typography>
-                      <div className={classes.mainBadge}>
-                        <WifiConnected style={{fontSize: 72}} fontSize={'large'} color={'secondary'} />
-                        <Typography variant="h5" color={'secondary'} gutterBottom>
-                          Connected
+                    <div style={{marginTop: 14, marginBottom: 14}}>
+                      <div className={classes.inlining}>
+                        <Avatar className={classes.loanAvatar}></Avatar>
+                        <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
+                          Type
+                        </Typography>
+                        <Typography className={classes.inlining} color='secondary' variant="h6" gutterBottom>
+                          {numeral(monthlyPayment).format()} units
                         </Typography>
                       </div>
-                      <div className={classes.buttonBar}>
-                        <Button to={{ pathname: "/dashboard", search: `?type=save` }} component={Link} variant="outlined" className={classes.actionButtom}>
-                          Networks
-                        </Button>
-                        <Button to={{ pathname: "/dashboard", search: `?type=apply` }} component={Link} color='primary' variant="contained" className={classes.actionButtom}>
-                          Update
-                        </Button>
+                      <div className={classes.inlining}>
+                        <Avatar className={classes.interestAvatar}></Avatar>
+                        <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
+                          Othe type
+                        </Typography>
+                        <Typography className={classes.inlining} color="secondary" variant="h6" gutterBottom>
+                          {numeral(monthlyInterest).format()} units
+                        </Typography>
                       </div>
                     </div>
-                  </Paper>
+                    <div>
+                      <SimpleLineChart data={data} />
+                    </div>
+                  </div>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <Paper className={classes.paper} style={{position: 'relative'}}>
+                  <Loading loading={loading} />
+                  <Typography variant="subtitle1" gutterBottom>
+                    Some details
+                  </Typography>
+                  <Typography variant="body1">
+                    Details about the graph
+                  </Typography>
+                  <div>
+                    <SensorChart />
+                  </div>
+                </Paper>
               </Grid>
             </Grid>
           </Grid>

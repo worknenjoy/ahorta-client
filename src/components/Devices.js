@@ -3,7 +3,7 @@ import axios from 'axios';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import CardItem from './cards/CardItem';
+import DeviceItem from './cards/DeviceItem';
 import Topbar from './Topbar';
 import SectionHeader from './typo/SectionHeader';
 const backgroundShape = require('../images/shape.svg');
@@ -49,6 +49,10 @@ class Devices extends Component {
     });
   }
 
+  onAction = (id) => {
+    this.props.history.push(`/dashboard/${id}`)
+  }
+
   render() {
     const { classes } = this.props
     const { data } = this.state
@@ -62,13 +66,13 @@ class Devices extends Component {
           <Grid container justify="center"> 
             <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>            
               <Grid item xs={12}>
-                <SectionHeader title="Cards" subtitle="One page with a list of a collection" />
+                <SectionHeader title="Devices" subtitle="Ahorta devices created" />
                 {data.map(r =>  {
-                  return (
-                    <div style={{marginTop: 20}}>
-                      <CardItem />
-                    </div>
-                    )
+                    return r.deviceId && 
+                      <div style={{marginTop: 20}}>
+                        <DeviceItem ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
+                      </div>
+                    
                   })}
               </Grid>
             </Grid>
