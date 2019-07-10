@@ -161,6 +161,7 @@ class Dashboard extends Component {
     .then((response) => {
       console.log('response', response);
       this.setState({device: response.data})
+      this.setState({amount: response.data.timer / 3600000})
     })
     .catch(error => {
       console.log(error);
@@ -170,6 +171,24 @@ class Dashboard extends Component {
 
   handleChangeAmount = (event, value) => {
     this.setState({amount: value, loading: false});
+    const dashboardId = this.props.match.params.id
+    axios.put(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
+      {
+        timer: value * 3600000
+      },
+      { 
+        headers: {
+          'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    .then((response) => {
+      console.log('updated', response)
+    })
+    .catch(error => {
+      console.log(error);
+    });
     this.updateValues();
   }
 
@@ -214,8 +233,61 @@ class Dashboard extends Component {
                     <Button variant="outlined" className={classes.outlinedButtom}>
                       How it works?
                     </Button>
+                    <Button variant="outlined" className={classes.outlinedButtom}>
+                      Be notified
+                    </Button>
                   </div>
                 </div>
+              </Grid>
+              <Grid item xs={12} md={8} >
+                <Paper className={classes.paper} style={{position: 'relative'}}>
+                  <Loading loading={loading} />
+                  <div className={loading ? classes.loadingState : ''}>
+                    <Typography variant="subtitle1" gutterBottom>
+                      Some details
+                    </Typography>
+                    <Typography variant="body1">
+                      Details about the graph
+                    </Typography>
+                    <div style={{marginTop: 14, marginBottom: 14}}>
+                      <div className={classes.inlining}>
+                        <Avatar className={classes.loanAvatar}></Avatar>
+                        <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
+                          Type
+                        </Typography>
+                        <Typography className={classes.inlining} color='secondary' variant="h6" gutterBottom>
+                          {numeral(monthlyPayment).format()} units
+                        </Typography>
+                      </div>
+                      <div className={classes.inlining}>
+                        <Avatar className={classes.interestAvatar}></Avatar>
+                        <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
+                          Othe type
+                        </Typography>
+                        <Typography className={classes.inlining} color="secondary" variant="h6" gutterBottom>
+                          {numeral(monthlyInterest).format()} units
+                        </Typography>
+                      </div>
+                    </div>
+                    <div>
+                      <SimpleLineChart data={data} />
+                    </div>
+                  </div>
+                </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <Paper className={classes.paper} style={{position: 'relative'}}>
+                  <Loading loading={loading} />
+                  <Typography variant="subtitle1" gutterBottom>
+                    Some details
+                  </Typography>
+                  <Typography variant="body1">
+                    Details about the graph
+                  </Typography>
+                  <div>
+                    <SensorChart />
+                  </div>
+                </Paper>
               </Grid>
               <Grid item xs={12} md={4}>
                 <Paper className={classes.paper}>
@@ -331,58 +403,9 @@ class Dashboard extends Component {
                   </div>
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={8} >
-                <Paper className={classes.paper} style={{position: 'relative'}}>
-                  <Loading loading={loading} />
-                  <div className={loading ? classes.loadingState : ''}>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Some details
-                    </Typography>
-                    <Typography variant="body1">
-                      Details about the graph
-                    </Typography>
-                    <div style={{marginTop: 14, marginBottom: 14}}>
-                      <div className={classes.inlining}>
-                        <Avatar className={classes.loanAvatar}></Avatar>
-                        <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
-                          Type
-                        </Typography>
-                        <Typography className={classes.inlining} color='secondary' variant="h6" gutterBottom>
-                          {numeral(monthlyPayment).format()} units
-                        </Typography>
-                      </div>
-                      <div className={classes.inlining}>
-                        <Avatar className={classes.interestAvatar}></Avatar>
-                        <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
-                          Othe type
-                        </Typography>
-                        <Typography className={classes.inlining} color="secondary" variant="h6" gutterBottom>
-                          {numeral(monthlyInterest).format()} units
-                        </Typography>
-                      </div>
-                    </div>
-                    <div>
-                      <SimpleLineChart data={data} />
-                    </div>
-                  </div>
-                </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
-                <Paper className={classes.paper} style={{position: 'relative'}}>
-                  <Loading loading={loading} />
-                  <Typography variant="subtitle1" gutterBottom>
-                    Some details
-                  </Typography>
-                  <Typography variant="body1">
-                    Details about the graph
-                  </Typography>
-                  <div>
-                    <SensorChart />
-                  </div>
-                </Paper>
-              </Grid>
             </Grid>
           </Grid>
+
         </div>
       </React.Fragment>
     )

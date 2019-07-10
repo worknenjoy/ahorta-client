@@ -71,13 +71,13 @@ export default class SensorChart extends PureComponent {
 
   render() {
     return (
-      <PieChart width={400} height={400}>
+      <PieChart width={350} height={300}>
         <Pie
           activeIndex={this.state.activeIndex}
           activeShape={renderActiveShape}
           data={data}
           cx={140}
-          cy={200}
+          cy={120}
           innerRadius={40}
           outerRadius={80}
           fill="#388e3c"
