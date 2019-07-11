@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import SpaIcon from '@material-ui/icons/Spa';
 import ButtonBar from '../buttons/ButtonBar';
+import { red, green } from '@material-ui/core/colors'
 
 const styles = theme => ({
   paper: {
@@ -73,7 +74,7 @@ const styles = theme => ({
 class DeviceItem extends Component {
 
   render() {
-    const { classes, ssid, deviceId, name, onAction, lastReading } = this.props;
+    const { classes, ssid, deviceId, name, onAction, lastReading, threshold } = this.props;
 
     return (
       <div className={classes.root}>
@@ -86,7 +87,7 @@ class DeviceItem extends Component {
             </div>
             <div className={classes.baseline}>
               <div className={classes.inline}>
-                <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
+                <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
                   Network name
                 </Typography>
                 <Typography variant="h6" gutterBottom>
@@ -94,7 +95,7 @@ class DeviceItem extends Component {
                 </Typography>
               </div>
               <div className={classes.inline}>
-                <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
+                <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
                   Device ID
                 </Typography>
                 <Typography variant="h6" gutterBottom>
@@ -102,11 +103,11 @@ class DeviceItem extends Component {
                 </Typography>
               </div>
               <div className={classes.inline}>
-                <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
+                <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
                   Last humidity
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  {lastReading}
+                  <span style={{color: lastReading > threshold ? green['900'] : red['700']}}>{`${lastReading} %`}</span>
                 </Typography>
               </div>
             </div>

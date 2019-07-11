@@ -281,8 +281,8 @@ class Dashboard extends Component {
                     This is the humidity from the sensor
                   </Typography>
                   <div>
-                    <SensorChart healthy={start} value={0} data={[
-                      { name: device.name, value: percent(device.Readings && device.Readings[0].value) },
+                    <SensorChart threshold={start} value={percent(device.Readings && device.Readings[0].value)} data={[
+                      { name: device.Readings && moment(device.Readings[0].createdAt).calendar(), value: percent(device.Readings && device.Readings[0].value) },
                       { name: 'Group B', value: percent(device.Readings && device.Readings[0].value) === 0 ? 100 : percent(device.Readings && device.Readings[0].value) * 18}
                     ]} />
                   </div>

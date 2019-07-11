@@ -20,7 +20,7 @@ const renderActiveShape = (props) => {
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <text x={cx} y={cy} dy={8} fontSize={9} textAnchor="middle" fill={fill}>{payload.name}</text>
       <Sector
         cx={cx}
         cy={cy}
@@ -64,6 +64,7 @@ export default class SensorChart extends PureComponent {
   };
 
   render() {
+    console.log(this.props.threshold, this.props.value)
     return (
       <PieChart width={350} height={300}>
         <Pie
@@ -74,7 +75,7 @@ export default class SensorChart extends PureComponent {
           cy={120}
           innerRadius={40}
           outerRadius={80}
-          fill={this.props.threshold > this.props.value ? "#388e3c" : red[700]}
+          fill={this.props.threshold < this.props.value ? "#388e3c" : red[700]}
           dataKey="value"
           onMouseEnter={this.onPieEnter}
         />
