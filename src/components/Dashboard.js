@@ -244,10 +244,10 @@ class Dashboard extends Component {
                   <Loading loading={loading} />
                   <div className={loading ? classes.loadingState : ''}>
                     <Typography variant="subtitle1" gutterBottom>
-                      Some details
+                      Humidity along the time
                     </Typography>
                     <Typography variant="body1">
-                      Details about the graph
+                      This is the measures we did
                     </Typography>
                     <div style={{marginTop: 14, marginBottom: 14}}>
                       <div className={classes.inlining}>
@@ -279,13 +279,16 @@ class Dashboard extends Component {
                 <Paper className={classes.paper} style={{position: 'relative'}}>
                   <Loading loading={loading} />
                   <Typography variant="subtitle1" gutterBottom>
-                    Some details
+                    Humidity
                   </Typography>
                   <Typography variant="body1">
-                    Details about the graph
+                    This is the humidity from the sensor
                   </Typography>
                   <div>
-                    <SensorChart />
+                    <SensorChart value={0} data={[
+                      { name: 'Humidity', value: 20 },
+                      { name: 'Group B', value: 80}
+                    ]} />
                   </div>
                 </Paper>
               </Grid>
