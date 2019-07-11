@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
+import { red } from '@material-ui/core/colors'
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -40,7 +41,7 @@ const renderActiveShape = (props) => {
       />
       <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`Measure`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`Value`}</text>
       <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
         {`(${value}%)`}
       </text>
@@ -73,7 +74,7 @@ export default class SensorChart extends PureComponent {
           cy={120}
           innerRadius={40}
           outerRadius={80}
-          fill="#388e3c"
+          fill={this.props.threshold > this.props.value ? "#388e3c" : red[700]}
           dataKey="value"
           onMouseEnter={this.onPieEnter}
         />

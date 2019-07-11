@@ -120,32 +120,13 @@ class Dashboard extends Component {
     device: {},
     loading: false,
     amount: 1,
-    period: 12,
+    period: 24,
     start: 10,
-    monthlyInterest: 0,
-    totalInterest: 0,
-    monthlyPayment: 0,
-    totalPayment: 0,
     data: []
   };
 
   updateValues() {
-    const { amount, period, start } = this.state;
-    const monthlyInterest = (amount)*(Math.pow(0.01*(1.01), period))/(Math.pow(0.01, period - 1))
-    const totalInterest = monthlyInterest * (period + start);
-    const totalPayment = amount + totalInterest;
-    const monthlyPayment = period > start ? totalPayment/(period - start) : totalPayment/(period)
-
-    const data = Array.from({length: period + start}, (value, i) => {
-      const delayed = i < start;
-      return {
-        name: monthRange[i],
-        'Type': delayed ? 0 : Math.ceil(monthlyPayment).toFixed(0),
-        'OtherType': Math.ceil(monthlyInterest).toFixed(0)
-      }
-    })
-
-    this.setState({monthlyInterest, totalInterest, totalPayment, monthlyPayment, data})
+    
   }
 
   componentDidMount() {
@@ -161,7 +142,7 @@ class Dashboard extends Component {
     .then((response) => {
       console.log('response', response);
       this.setState({device: response.data})
-      this.setState({amount: response.data.timer / 3600000})
+      this.setState({start: response.data.threshold, amount: response.data.timer / 3600000})
     })
     .catch(error => {
       console.log(error);
@@ -199,6 +180,24 @@ class Dashboard extends Component {
 
   handleChangeStart = (event, value) => {
     this.setState({start: value, loading: false});
+    const dashboardId = this.props.match.params.id
+    axios.put(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
+      {
+        threshold: value || 0
+      },
+      { 
+        headers: {
+          'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    .then((response) => {
+      console.log('updated', response)
+    })
+    .catch(error => {
+      console.log(error);
+    });
     this.updateValues();
   }
 
@@ -254,24 +253,20 @@ class Dashboard extends Component {
                       <div className={classes.inlining}>
                         <Avatar className={classes.loanAvatar}></Avatar>
                         <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
-                          Type
+                          Value
                         </Typography>
                         <Typography className={classes.inlining} color='secondary' variant="h6" gutterBottom>
-                          {numeral(monthlyPayment).format()} units
-                        </Typography>
-                      </div>
-                      <div className={classes.inlining}>
-                        <Avatar className={classes.interestAvatar}></Avatar>
-                        <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
-                          Othe type
-                        </Typography>
-                        <Typography className={classes.inlining} color="secondary" variant="h6" gutterBottom>
-                          {numeral(monthlyInterest).format()} units
+                          %
                         </Typography>
                       </div>
                     </div>
                     <div>
-                      <SimpleLineChart data={data} />
+                      <SimpleLineChart data={device.Readings && device.Readings.map(r => (
+                        {
+                          value: percent(r.value),
+                          createdAt: moment(r.createdAt).calendar()
+                        }
+                      ))} />
                     </div>
                   </div>
                 </Paper>
@@ -286,9 +281,9 @@ class Dashboard extends Component {
                     This is the humidity from the sensor
                   </Typography>
                   <div>
-                    <SensorChart value={0} data={[
+                    <SensorChart healthy={start} value={0} data={[
                       { name: device.name, value: percent(device.Readings && device.Readings[0].value) },
-                      { name: 'Group B', value: percent(device.Readings && device.Readings[0].value) === 0 ? 100 : percent(device.Readings && device.Readings[0].value) * 4}
+                      { name: 'Group B', value: percent(device.Readings && device.Readings[0].value) === 0 ? 100 : percent(device.Readings && device.Readings[0].value) * 18}
                     ]} />
                   </div>
                 </Paper>

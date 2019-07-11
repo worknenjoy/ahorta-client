@@ -10,10 +10,10 @@ function SimpleLineChart(props) {
   const { theme, data } = props;
   return (
     <ResponsiveContainer width="99%" height={225}>
-      <BarChart data={data}>
-        <XAxis dataKey="name"/>
-        <Tooltip/>
-        <Bar dataKey="Type" stackId="a" fill={theme.palette.primary.main} />
+      <BarChart data={data && data.reverse()}>
+        <XAxis dataKey="createdAt"/>
+        <Tooltip />
+        <Bar dataKey="value" stackId="a" fill={theme.palette.primary.main} />
       </BarChart>
     </ResponsiveContainer>
   );

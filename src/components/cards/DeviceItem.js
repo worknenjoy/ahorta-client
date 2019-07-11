@@ -103,7 +103,7 @@ class DeviceItem extends Component {
               </div>
               <div className={classes.inline}>
                 <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>
-                  Last measure
+                  Last humidity
                 </Typography>
                 <Typography variant="h6" gutterBottom>
                   {lastReading}
