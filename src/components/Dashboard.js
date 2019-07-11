@@ -288,7 +288,7 @@ class Dashboard extends Component {
                   <div>
                     <SensorChart value={0} data={[
                       { name: device.name, value: percent(device.Readings && device.Readings[0].value) },
-                      { name: 'Group B', value: percent(device.Readings && device.Readings[0].value) * 4}
+                      { name: 'Group B', value: percent(device.Readings && device.Readings[0].value) === 0 ? 100 : percent(device.Readings && device.Readings[0].value) * 4}
                     ]} />
                   </div>
                 </Paper>
