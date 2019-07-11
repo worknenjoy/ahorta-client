@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import SpaIcon from '@material-ui/icons/Spa';
 import ButtonBar from '../buttons/ButtonBar';
+import moment from 'moment';
 import { red, green } from '@material-ui/core/colors'
 
 const styles = theme => ({
@@ -36,7 +37,8 @@ const styles = theme => ({
   },
   baseline: {
     alignSelf: 'baseline',
-    marginLeft: theme.spacing.unit * 4,
+    width: '100%',
+    marginLeft: theme.spacing.unit * 2,
     [theme.breakpoints.down('sm')]: {
       display: 'flex',
       flexDirection: 'column',
@@ -108,6 +110,14 @@ class DeviceItem extends Component {
                 </Typography>
                 <Typography variant="h6" gutterBottom>
                   <span style={{color: lastReading > threshold ? green['900'] : red['700']}}>{`${lastReading} %`}</span>
+                </Typography>
+              </div>
+              <div className={classes.inline}>
+                <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
+                  Last check
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  {moment(this.props.at).calendar()}
                 </Typography>
               </div>
             </div>
