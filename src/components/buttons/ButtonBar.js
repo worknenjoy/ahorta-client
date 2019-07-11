@@ -25,11 +25,6 @@ class ButtonBar extends Component {
     return (
       <div className={classes.spaceTop}>
         <Button
-          className={classes.primary}
-        >
-          Delete
-        </Button>
-        <Button
           onClick={onAction}
           variant="contained"
           color="primary"

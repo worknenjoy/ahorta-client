@@ -207,6 +207,7 @@ class Dashboard extends Component {
     const { amount, period, start, monthlyPayment,
       monthlyInterest, data, loading, device } = this.state;
     const currentPath = this.props.location.pathname
+    const percent =  (value) => Math.round(100 - ( value / 1024 * 100));
 
     return (
       <React.Fragment>
@@ -286,8 +287,8 @@ class Dashboard extends Component {
                   </Typography>
                   <div>
                     <SensorChart value={0} data={[
-                      { name: 'Humidity', value: 20 },
-                      { name: 'Group B', value: 80}
+                      { name: device.name, value: percent(device.Readings && device.Readings[0].value) },
+                      { name: 'Group B', value: percent(device.Readings && device.Readings[0].value) * 4}
                     ]} />
                   </div>
                 </Paper>

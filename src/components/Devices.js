@@ -57,6 +57,7 @@ class Devices extends Component {
     const { classes } = this.props
     const { data } = this.state
     const currentPath = this.props.location.pathname
+    const percent =  (value) => Math.round(100 - ( value / 1024 * 100));
 
     return (
       <React.Fragment>
@@ -70,7 +71,7 @@ class Devices extends Component {
                 {data.map(r =>  {
                     return r.deviceId && 
                       <div style={{marginTop: 20}}>
-                        <DeviceItem ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
+                        <DeviceItem lastReading={`${percent(r.Readings && r.Readings[0].value) || 0} %`} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
                       </div>
                     
                   })}

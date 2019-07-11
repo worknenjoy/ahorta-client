@@ -55,7 +55,7 @@ const styles = theme => ({
     }
   },
   inlineRight: {
-    width: '30%',
+    width: '40%',
     textAlign: 'right',
     marginLeft: 50,
     alignSelf: 'flex-end',
@@ -73,7 +73,7 @@ const styles = theme => ({
 class DeviceItem extends Component {
 
   render() {
-    const { classes, ssid, deviceId, name, onAction } = this.props;
+    const { classes, ssid, deviceId, name, onAction, lastReading } = this.props;
 
     return (
       <div className={classes.root}>
@@ -106,7 +106,7 @@ class DeviceItem extends Component {
                   Last measure
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  13%
+                  {lastReading}
                 </Typography>
               </div>
             </div>
