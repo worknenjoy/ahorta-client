@@ -58,7 +58,7 @@ const styles = theme => ({
     }
   },
   inlineRight: {
-    width: '40%',
+    width: '30%',
     textAlign: 'right',
     marginLeft: 50,
     alignSelf: 'flex-end',
@@ -76,7 +76,7 @@ const styles = theme => ({
 class DeviceItem extends Component {
 
   render() {
-    const { classes, ssid, deviceId, name, onAction, lastReading, threshold } = this.props;
+    const { classes, ssid, deviceId, name, onAction, lastReading, threshold, at } = this.props;
 
     return (
       <div className={classes.root}>
@@ -112,14 +112,16 @@ class DeviceItem extends Component {
                   <span style={{color: lastReading > threshold ? green['900'] : red['700']}}>{`${lastReading} %`}</span>
                 </Typography>
               </div>
+              { at && (
               <div className={classes.inline}>
                 <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
                   Last check
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  {moment(this.props.at).calendar()}
+                  {moment(at).calendar()}
                 </Typography>
               </div>
+              )}
             </div>
             <div className={classes.inlineRight}>
               <Typography style={{ textTransform: 'uppercase' }} color='secondary' gutterBottom>

@@ -71,7 +71,7 @@ class Devices extends Component {
                 {data.map(r =>  {
                     return r.deviceId && 
                       <div style={{marginTop: 20}}>
-                        <DeviceItem at={r.readings && r.readings[0].createdAt} lastReading={percent(r.Readings && r.Readings[0].value) || 0} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
+                        <DeviceItem at={r.Readings && r.Readings[0].createdAt} lastReading={percent(r.Readings && r.Readings[0].value) || 0} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
                       </div>
                     
                   })}
