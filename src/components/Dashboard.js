@@ -292,10 +292,10 @@ class Dashboard extends Component {
                 <Paper className={classes.paper}>
                   <div>
                     <Typography variant="subtitle1" gutterBottom>
-                      How often you like to be notified
+                      How often the device will measure humidity
                     </Typography>
                     <Typography variant="body1">
-                      Use sliders to set the period for be notified.
+                      Use sliders to set the reading period <small>(requires restart)</small>
                     </Typography>
                     <div className={classes.blockCenter}>
                       <Typography color='secondary' variant="h6" gutterBottom>
@@ -331,10 +331,10 @@ class Dashboard extends Component {
                 <Paper className={classes.paper}>
                   <div>
                     <Typography variant="subtitle1" gutterBottom>
-                      Visualization period
+                      How often you want to be notified
                     </Typography>
                     <Typography variant="body1">
-                      Show in the graph the last period in hours
+                      Set the periodicity to receive notifications
                     </Typography>
                     <div className={classes.blockCenter}>
                       <Typography color='secondary' variant="h6" gutterBottom>
