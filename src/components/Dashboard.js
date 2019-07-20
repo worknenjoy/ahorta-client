@@ -261,7 +261,7 @@ class Dashboard extends Component {
                       </div>
                     </div>
                     <div>
-                      <SimpleLineChart data={device.Readings && device.Readings.map(r => (
+                      <SimpleLineChart threshold={device.threshold} data={device.Readings && device.Readings.map(r => (
                         {
                           value: percent(r.value),
                           createdAt: moment(r.createdAt).calendar()
@@ -304,6 +304,7 @@ class Dashboard extends Component {
                     </div>
                     <div>
                       <Slider
+                        disabled
                         value={amount}
                         min={1}
                         max={24}
@@ -342,6 +343,7 @@ class Dashboard extends Component {
                     </div>
                     <div>
                       <Slider
+                        disabled
                         value={period}
                         min={1}
                         max={24}
@@ -380,6 +382,7 @@ class Dashboard extends Component {
                     </div>
                     <div>
                       <Slider
+                        disabled
                         value={start}
                         min={0}
                         max={100}
