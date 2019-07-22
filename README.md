@@ -1,5 +1,5 @@
-# React Material UI template - Material Sense
-A full simple application for react material ui
+# Ahorta Client
+A dashboard which connects with Ahorta plants: https://github.com/worknenjoy/ahorta
 
 ## Features
 - Responsive
