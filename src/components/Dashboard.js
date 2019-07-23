@@ -14,6 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import SimpleLineChart from './SimpleLineChart';
 import Months from './common/Months';
 import Loading from './common/Loading';
+import SwipeDialog from './dialogs/SwipeDialog';
 
 import Topbar from './Topbar';
 import SensorChart from './SensorChart'
@@ -119,6 +120,7 @@ class Dashboard extends Component {
   state = {
     device: {},
     loading: false,
+    howItWorksDialog: false,
     amount: 1,
     period: 24,
     start: 10,
@@ -128,6 +130,8 @@ class Dashboard extends Component {
   updateValues() {
     
   }
+
+  
 
   componentDidMount() {
     const dashboardId = this.props.match.params.id
@@ -148,6 +152,14 @@ class Dashboard extends Component {
       console.log(error);
     });
     this.updateValues();
+  }
+
+  openDialog = (event) => {
+    this.setState({howItWorksDialog: true});
+  }
+
+  dialogClose = (event) => {
+    this.setState({howItWorksDialog: false});
   }
 
   handleChangeAmount = (event, value) => {
@@ -203,8 +215,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
-    const { amount, period, start, monthlyPayment,
-      monthlyInterest, data, loading, device } = this.state;
+    const { amount, period, start, loading, device, howItWorksDialog } = this.state;
     const currentPath = this.props.location.pathname
     const percent =  (value) => Math.round(100 - ( value / 1024 * 100));
 
@@ -230,11 +241,8 @@ class Dashboard extends Component {
                     </Typography>
                   </div>
                   <div>
-                    <Button variant="outlined" className={classes.outlinedButtom}>
+                    <Button onClick={this.openDialog} variant="outlined" className={classes.outlinedButtom}>
                       How it works?
-                    </Button>
-                    <Button variant="outlined" className={classes.outlinedButtom}>
-                      Be notified
                     </Button>
                   </div>
                 </div>
@@ -407,7 +415,9 @@ class Dashboard extends Component {
               </Grid>
             </Grid>
           </Grid>
-
+          <SwipeDialog
+            open={howItWorksDialog}
+            onClose={this.dialogClose} />
         </div>
       </React.Fragment>
     )

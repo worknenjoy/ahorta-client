@@ -8,40 +8,34 @@ import SwipeableViews from 'react-swipeable-views';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import { autoPlay } from 'react-swipeable-views-utils';
 
-const logo = require('../../images/logo.svg');
+const logo = require('../../images/ahorta-logo.png');
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const tutorialSteps = [
   {
-    label: 'A first label',
-    description: 'This is the first item on the label',
+    label: 'A NODE MCU with a sensor',
+    description: 'We use a Node MCU Module with a Micropython firmware to send requests about the humidity state',
     imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
+      'https://i0.wp.com/alexandremagno.net/wp-content/uploads/2018/12/Soil_Moisture_Interfacing_Diagram.png?resize=700%2C522&ssl=1',
   },
   {
-    label: 'A second label',
-    description: 'This is the second item on the label',
+    label: 'We read the plant humidity',
+    description: 'With the sensor we read the humidity level and send the result to our server',
     imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
+      'https://i1.wp.com/alexandremagno.net/wp-content/uploads/2018/12/soil-moisture-sensor-e1467578282801-1.png?w=1104&ssl=1',
   },
   {
-    label: 'A third label',
-    description: 'This is the third item on the label',
+    label: 'It fits with your plant',
+    description: 'This is a simple module that you can connect in your plant the way you want',
     imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
+      'https://i2.wp.com/alexandremagno.net/wp-content/uploads/2018/12/IMG_6074-1-e1543858334746.jpg?w=1400&ssl=1',
   },
   {
-    label: 'A fifth label',
-    description: 'This is the fifth item on the label',
+    label: 'We notify you by email',
+    description: 'You can setup the reading interval to receive notifications about your plant state',
     imgPath:
-      'https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=400&h=250&q=60',
-  },
-  {
-    label: 'Other label',
-    description: 'This is other label',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+      'https://i1.wp.com/alexandremagno.net/wp-content/uploads/2018/12/Screen-Shot-2018-12-03-at-6.23.36-PM.png?w=565&ssl=1',
   },
 ];
 
@@ -94,7 +88,7 @@ class SwipeDialog extends Component {
     return (
       <BaseDialog {...this.props}>
         <div className={classes.container}>
-          <div className={classes.gutterBottom}>
+          <div className={classes.bottomMargin}>
             <img width={100} src={logo} alt="" />
           </div>
           <div>
@@ -107,7 +101,7 @@ class SwipeDialog extends Component {
               {tutorialSteps.map((step, index) => (
                 <div key={step.label}>
                   {Math.abs(activeStep - index) <= 2 ? (
-                    <img className={classes.img} src={step.imgPath} alt={step.label} />
+                    <img width={400} className={classes.img} src={step.imgPath} alt={step.label} />
                   ) : null}
                 </div>
               ))}
@@ -136,11 +130,6 @@ class SwipeDialog extends Component {
             <Typography variant="body2" gutterBottom>
               {tutorialSteps[activeStep].description}
             </Typography>
-          </div>
-          <div>
-            <Button component={Link} to='/dashboard' variant='contained' onClick={this.handleClose} color="primary" autoFocus>
-                Getting started
-            </Button>
           </div>
         </div>
       </BaseDialog>

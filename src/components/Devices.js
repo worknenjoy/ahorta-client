@@ -3,9 +3,19 @@ import axios from 'axios';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import DeviceItem from './cards/DeviceItem';
 import Topbar from './Topbar';
 import SectionHeader from './typo/SectionHeader';
+import SubscribeFrom from 'react-mailchimp-subscribe'
+import {
+  red,
+  green,
+  teal
+} from '@material-ui/core/colors'
+
+import './mailchimp.css'
+
 const backgroundShape = require('../images/shape.svg');
 
 const styles = theme => ({
@@ -18,12 +28,46 @@ const styles = theme => ({
     backgroundPosition: '0 400px',
     marginTop: 20,
     padding: 20,
-    paddingBottom: 200
+    paddingBottom: 600
   },
   grid: {
     width: 1000
+  },
+  paper: {
+    padding: theme.spacing.unit * 3,
+    textAlign: 'left',
+    color: theme.palette.text.secondary
   }
 })
+
+const formProps = {
+  url: '//truppie.us17.list-manage.com/subscribe/post?u=bb76ecd5ef5cbbc5e60701321&amp;id=7582e094e3',
+  messages: {
+    inputPlaceholder: 'Leave your email',
+    btnLabel: 'I want one for me',
+    sending: 'subscribing',
+    success: 'Thanks for your interest. We will contact you to provide more details',
+    error: 'We couldnt register your email. Please check if the address is correct or try again later'
+  },
+  styles: {
+    sending: {
+      fontSize: 14,
+      color: green['900']
+    },
+    success: {
+      fontSize: 14,
+      color: green['900']
+    },
+    error: {
+      fontSize: 14,
+      backgroundColor: green['200'],
+      display: 'inline-block',
+      opacity: 0.8,
+      padding: 10,
+      color: red['700']
+    }
+  }
+}
 
 class Devices extends Component {
 
@@ -75,6 +119,16 @@ class Devices extends Component {
                       </div>
                     
                   })}
+              </Grid>
+              <Grid item xs={12}>
+                <SectionHeader title="Create yours" subtitle="Subscribe to know more how to create your own" />
+                <Paper className={classes.paper}>
+                  <div style={{textAlign: 'center'}}>
+                    <div className='subscribe-form'>
+                      <SubscribeFrom { ...formProps} />
+                    </div>
+                  </div>
+                </Paper>
               </Grid>
             </Grid>
           </Grid>
