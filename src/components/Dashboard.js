@@ -19,8 +19,12 @@ import SwipeDialog from './dialogs/SwipeDialog';
 import Topbar from './Topbar';
 import SensorChart from './SensorChart'
 
+import { Percent as percent } from '../modules/Percent'
+
 const numeral = require('numeral');
 numeral.defaultFormat('0');
+
+
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -217,7 +221,6 @@ class Dashboard extends Component {
     const { classes } = this.props;
     const { amount, period, start, loading, device, howItWorksDialog } = this.state;
     const currentPath = this.props.location.pathname
-    const percent =  (value) => Math.round(100 - ( value / 1024 * 100));
 
     return (
       <React.Fragment>

@@ -10,11 +10,11 @@ import SectionHeader from './typo/SectionHeader';
 import SubscribeFrom from 'react-mailchimp-subscribe'
 import {
   red,
-  green,
-  teal
+  green
 } from '@material-ui/core/colors'
 
 import './mailchimp.css'
+import { Percent as percent } from '../modules/Percent'
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -101,7 +101,6 @@ class Devices extends Component {
     const { classes } = this.props
     const { data } = this.state
     const currentPath = this.props.location.pathname
-    const percent =  (value) => Math.round(100 - ( value / 1024 * 100));
 
     return (
       <React.Fragment>
