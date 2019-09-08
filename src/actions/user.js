@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { genPlainActions, genAsyncActions } from 'react-redux-gen'
 
 const headers = {

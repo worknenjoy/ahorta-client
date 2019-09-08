@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -111,6 +112,8 @@ const getSteps = () => {
 class Signup extends Component {
 
   state = {
+    email: '',
+    password: '',
     activeStep: 0,
     receivingAccount: '',
     termsChecked: false,
@@ -119,7 +122,7 @@ class Signup extends Component {
   }
 
   componentDidMount() {
-
+    //await this.props.logged()
   }
 
   handleNext = () => {
@@ -199,20 +202,43 @@ class Signup extends Component {
                       <div>
                         <div style={{marginBottom: 32}}>
                           <Typography variant="subtitle1" style={{fontWeight: 'bold'}} gutterBottom>
-                            Select
+                            Login into your account
                           </Typography>
                           <Typography variant="body1" gutterBottom>
-                            A item to select
+                           Please login with your credentials
                           </Typography>
                         </div>
                         <div>
                           <Typography style={{textTransform: 'uppercase', marginBottom: 20}} color='secondary' gutterBottom>
                             First options
                           </Typography>
-                          <FormControl variant="outlined" className={classes.formControl}>
+                          <form className={classes.container} noValidate autoComplete="off">
+                            <TextField
+                              id="email"
+                              name="email"
+                              label="Email"
+                              type="email"
+                              className={classes.textField}
+                              
+                              onChange={this.handleChange}
+                              margin="normal"
+                              variant="outlined"
+                            />
+                            <TextField
+                              id="password"
+                              name="password"
+                              label="Password"
+                              type="password"
+                              className={classes.textField}
+                              
+                              onChange={(event) => this.handleChange(event)}
+                              margin="normal"
+                              variant="outlined"
+                            />
+                            <FormControl variant="outlined" className={classes.formControl}>
                             <Select
                               value={this.state.receivingAccount}
-                              onChange={this.handleChange}
+                              onChange={(event) => this.handleChange(event)}
                               input={
                                 <OutlinedInput
                                   labelWidth={this.state.labelWidth}
@@ -227,6 +253,7 @@ class Signup extends Component {
                               <MenuItem value={'second'}>Other option</MenuItem>
                             </Select>
                           </FormControl>
+                          </form>
                         </div>
                       </div>
                     </Paper>
@@ -339,7 +366,10 @@ class Signup extends Component {
                      <Button
                        variant="contained"
                        color="primary"
-                       onClick={this.handleNext}
+                       onClick={() => this.props.login({
+                          email: this.state.email,
+                          password: this.state.password
+                       })}
                        size='large'
                        style={this.state.receivingAccount.length ? {background: classes.button, color: 'white'} : {}}
                        disabled={!this.state.receivingAccount.length}
