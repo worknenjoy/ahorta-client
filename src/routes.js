@@ -1,7 +1,8 @@
 import React from 'react'
 import { Route, HashRouter, Switch, Redirect } from 'react-router-dom'
 import Dashboard from './components/Dashboard'
-import Devices from './components/Devices'
+import Devices from './containers/devices'
+import Users from './containers/users'
 import ScrollToTop from './components/ScrollTop'
 
 export default props => (
@@ -9,6 +10,7 @@ export default props => (
       <ScrollToTop>
         <Switch>
           <Route exact path='/devices' component={ Devices } />
+          <Route exact path='/users' component={ Users } />
           <Route exact path='/dashboard/:id' component={ Dashboard } />
           <Redirect path='/' to='/devices' />
         </Switch>

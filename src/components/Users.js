@@ -2,18 +2,9 @@ import React,  { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import DeviceItem from './cards/DeviceItem';
 import Topbar from './Topbar';
 import SectionHeader from './typo/SectionHeader';
-import SubscribeFrom from 'react-mailchimp-subscribe'
-import {
-  red,
-  green
-} from '@material-ui/core/colors'
-
-import './mailchimp.css'
-import { Percent as percent } from '../modules/Percent'
+import UserItem from './cards/UserItem'
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -39,40 +30,7 @@ const styles = theme => ({
   }
 })
 
-const formProps = {
-  url: '//truppie.us17.list-manage.com/subscribe/post?u=bb76ecd5ef5cbbc5e60701321&amp;id=7582e094e3',
-  messages: {
-    inputPlaceholder: 'Leave your email',
-    btnLabel: 'I want one for me',
-    sending: 'subscribing',
-    success: 'Thanks for your interest. We will contact you to provide more details',
-    error: 'We couldnt register your email. Please check if the address is correct or try again later'
-  },
-  styles: {
-    sending: {
-      fontSize: 14,
-      color: green['900']
-    },
-    success: {
-      fontSize: 14,
-      color: green['900']
-    },
-    error: {
-      fontSize: 14,
-      backgroundColor: green['200'],
-      display: 'inline-block',
-      opacity: 0.8,
-      padding: 10,
-      color: red['700']
-    }
-  }
-}
-
-class Devices extends Component {
-
-  state = {
-    data: []
-  }
+class Users extends Component {
 
   async componentDidMount() {
     /*axios.get(`https://ahorta.herokuapp.com/devices`,
@@ -91,6 +49,7 @@ class Devices extends Component {
       console.log(error);
     });*/
     await this.props.listUsers()
+    console.log(this.props)
     //const newUser = await this.props.createUser({email: 'alz@worknenjoy.com', password: 'demo'})
     //const user = await this.props.fetchUser(7)
     //const updateUser = await this.props.updateUser(7, {name: 'Alexandre Magno'})
@@ -102,7 +61,7 @@ class Devices extends Component {
 
   render() {
     const { classes } = this.props
-    const { data } = this.state
+    const { users } = this.props
     const currentPath = this.props.location.pathname
 
     return (
@@ -113,24 +72,14 @@ class Devices extends Component {
           <Grid container justify="center"> 
             <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>            
               <Grid item xs={12}>
-                <SectionHeader title="Devices" subtitle="Ahorta devices created" />
-                {data.map(r =>  {
-                    return r.deviceId && 
+                <SectionHeader title="Users" subtitle="This is our Ahorta makers" />
+                {users && users.data.length && users.data.map(u =>  {
+                    return u.email && 
                       <div style={{marginTop: 20}}>
-                        <DeviceItem at={r.Readings && r.Readings[0].createdAt} lastReading={percent(r.Readings && r.Readings[0].value) || 0} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
+                        <UserItem user={u} />
                       </div>
                     
                   })}
-              </Grid>
-              <Grid item xs={12}>
-                <SectionHeader title="Create yours" subtitle="Subscribe to know more how to create your own" />
-                <Paper className={classes.paper}>
-                  <div style={{textAlign: 'center'}}>
-                    <div className='subscribe-form'>
-                      <SubscribeFrom { ...formProps} />
-                    </div>
-                  </div>
-                </Paper>
               </Grid>
             </Grid>
           </Grid>
@@ -140,4 +89,4 @@ class Devices extends Component {
   }
 }
 
-export default withStyles(styles)(Devices);
+export default withStyles(styles)(Users);
