@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { createStore, compose, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles'
+import { createMuiTheme } from '@material-ui/core/styles'
 import './App.css';
 import Routes from './routes'
 import { lightGreen, green } from '@material-ui/core/colors'
@@ -47,11 +48,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
           <Provider store={store}>
             <Routes />
           </Provider>
-        </MuiThemeProvider>
+        </ThemeProvider>
       </div>
     );
   }

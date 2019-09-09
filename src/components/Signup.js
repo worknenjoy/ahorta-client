@@ -1,5 +1,5 @@
 import React,  { Component } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
+import withStyles from '@material-ui/styles/withStyles';
 import { withRouter } from 'react-router-dom'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -19,9 +19,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
 import Back from './common/Back';
+import CustomizedSnackbars from './common/CustomizedSnackbars'
+
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -118,7 +122,8 @@ class Signup extends Component {
     receivingAccount: '',
     termsChecked: false,
     loading: true,
-    labelWidth: 0
+    labelWidth: 0,
+    errorMessage: false
   }
 
   componentDidMount() {
@@ -167,6 +172,20 @@ class Signup extends Component {
     return 'Next';
   }
 
+  signUser = (event) => {
+    event.preventDefault()
+    this.props.login({
+      email: this.state.email,
+      password: this.state.password
+    }).then(result => {
+      if(result.error) return this.props.openNotification(result.error.message, 'error')
+      console.log('login reult direct to main page', result)
+    }).catch(e => {
+      console.log('error', e)
+      return this.props.openNotification(e.message, 'error')
+    })
+  }
+
   render() {
 
     const { classes } = this.props;
@@ -184,209 +203,214 @@ class Signup extends Component {
                 <div className={classes.logo}>
                   <img width={100} height={100} src={logo} alt="" />
                 </div>
-                <div className={classes.stepContainer}>
-                  <div className={classes.stepGrid}>
-                    <Stepper classes={{root: classes.stepper}} activeStep={activeStep} alternativeLabel>
-                      {steps.map(label => {
-                        return (
-                          <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
-                          </Step>
-                        );
-                      })}
-                    </Stepper>
-                  </div>
-                  { activeStep === 0 && (
-                  <div className={classes.smallContainer}>
-                    <Paper className={classes.paper}>
-                      <div>
-                        <div style={{marginBottom: 32}}>
-                          <Typography variant="subtitle1" style={{fontWeight: 'bold'}} gutterBottom>
-                            Login into your account
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                           Please login with your credentials
-                          </Typography>
-                        </div>
+                <form method='POST' 
+                  onSubmit={(event) => this.signUser(event)} 
+                  className={classes.container}
+                  noValidate
+                  autoComplete="off"
+                  >
+                  <div className={classes.stepContainer}>
+                    <div className={classes.stepGrid}>
+                      <Stepper classes={{root: classes.stepper}} activeStep={activeStep} alternativeLabel>
+                        {steps.map(label => {
+                          return (
+                            <Step key={label}>
+                              <StepLabel>{label}</StepLabel>
+                            </Step>
+                          );
+                        })}
+                      </Stepper>
+                    </div>
+                    { activeStep === 0 && (
+                    <div className={classes.smallContainer}>
+                      <Paper className={classes.paper}>
                         <div>
-                          <Typography style={{textTransform: 'uppercase', marginBottom: 20}} color='secondary' gutterBottom>
-                            First options
-                          </Typography>
-                          <form className={classes.container} noValidate autoComplete="off">
-                            <TextField
-                              id="email"
-                              name="email"
-                              label="Email"
-                              type="email"
-                              className={classes.textField}
-                              
-                              onChange={this.handleChange}
-                              margin="normal"
-                              variant="outlined"
-                            />
-                            <TextField
-                              id="password"
-                              name="password"
-                              label="Password"
-                              type="password"
-                              className={classes.textField}
-                              
-                              onChange={(event) => this.handleChange(event)}
-                              margin="normal"
-                              variant="outlined"
-                            />
-                            <FormControl variant="outlined" className={classes.formControl}>
-                            <Select
-                              value={this.state.receivingAccount}
-                              onChange={(event) => this.handleChange(event)}
-                              input={
-                                <OutlinedInput
-                                  labelWidth={this.state.labelWidth}
-                                  name="receivingAccount"
-                                />
-                              }
-                            >
-                              <MenuItem value="">
-                                <em>Select some option</em>
-                              </MenuItem>
-                              <MenuItem value={'first'}>Option 1</MenuItem>
-                              <MenuItem value={'second'}>Other option</MenuItem>
-                            </Select>
-                          </FormControl>
-                          </form>
-                        </div>
-                      </div>
-                    </Paper>
-                    </div>
-                  )}
-                  { activeStep === 1 && (
-                  <div className={classes.smallContainer}>
-                    <Paper className={classes.paper}>
-                      <Grid item container xs={12}>
-                        <Grid item xs={12}>
-                          <Typography variant="subtitle1" gutterBottom>
-                            Sign & confirm
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            Sign and confirm loan agreement
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            One text to explain that
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Paper>
-                    </div>
-                  )}
-                  { activeStep === 2 && (
-                  <div className={classes.smallContainer}>
-                    <Paper className={classes.paper}>
-                      <div>
-                        <div style={{marginBottom: 32}}>
-                          <Typography variant="subtitle1" gutterBottom>
-                            Permissions
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            We need some permissions to proceed.
-                          </Typography>
-                        </div>
-                        <div>
-                          <Typography color='secondary' gutterBottom>
-                            Accounts
-                          </Typography>
-                          <List component="nav">
-                            <ListItem>
-                              <ListItemIcon>
-                                <DoneIcon />
-                              </ListItemIcon>
-                              <ListItemText inset primary="0297 00988200918" />
-                            </ListItem>
-                            <ListItem>
-                              <ListItemIcon>
-                                <DoneIcon />
-                              </ListItemIcon>
-                              <ListItemText inset primary="0297 00988200920" />
-                            </ListItem>
-                          </List>
-                        </div>
-                      </div>
-                    </Paper>
-                    </div>
-                  )}
-                  { activeStep === 3 && (
-                  <div className={classes.bigContainer}>
-                    <Paper className={classes.paper}>
-                      <div style={{display: 'flex', justifyContent: 'center'}}>
-                        <div style={{width: 380, textAlign: 'center'}}>
                           <div style={{marginBottom: 32}}>
-                            <Typography variant="h6" style={{fontWeight: 'bold'}} gutterBottom>
-                              Collecting your data
+                            <Typography variant="subtitle1" style={{fontWeight: 'bold'}} gutterBottom>
+                              Login into your account
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                              We are processing your request
+                            Please login with your credentials
                             </Typography>
                           </div>
                           <div>
-                            <Fade
-                              in={loading}
-                              style={{
-                                transitionDelay: loading ? '800ms' : '0ms',
-                              }}
-                              unmountOnExit
-                            >
-                              <CircularProgress style={{marginBottom: 32, width: 100, height: 100}} />
-                            </Fade>
+                            <Typography style={{textTransform: 'uppercase', marginBottom: 20}} color='secondary' gutterBottom>
+                              First options
+                            </Typography>
+                              <TextField
+                                id="email"
+                                name="email"
+                                label="Email"
+                                type="email"
+                                className={classes.textField}
+                                
+                                onChange={this.handleChange}
+                                margin="normal"
+                                variant="outlined"
+                              />
+                              <TextField
+                                id="password"
+                                name="password"
+                                label="Password"
+                                type="password"
+                                className={classes.textField}
+                                
+                                onChange={(event) => this.handleChange(event)}
+                                margin="normal"
+                                variant="outlined"
+                              />
+                              <FormControl variant="outlined" className={classes.formControl}>
+                              <Select
+                                value={this.state.receivingAccount}
+                                onChange={(event) => this.handleChange(event)}
+                                input={
+                                  <OutlinedInput
+                                    labelWidth={this.state.labelWidth}
+                                    name="receivingAccount"
+                                  />
+                                }
+                              >
+                                <MenuItem value="">
+                                  <em>Select some option</em>
+                                </MenuItem>
+                                <MenuItem value={'first'}>Option 1</MenuItem>
+                                <MenuItem value={'second'}>Other option</MenuItem>
+                              </Select>
+                            </FormControl>
                           </div>
                         </div>
+                      </Paper>
                       </div>
-                    </Paper>
+                    )}
+                    { activeStep === 1 && (
+                    <div className={classes.smallContainer}>
+                      <Paper className={classes.paper}>
+                        <Grid item container xs={12}>
+                          <Grid item xs={12}>
+                            <Typography variant="subtitle1" gutterBottom>
+                              Sign & confirm
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              Sign and confirm loan agreement
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              One text to explain that
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Paper>
+                      </div>
+                    )}
+                    { activeStep === 2 && (
+                    <div className={classes.smallContainer}>
+                      <Paper className={classes.paper}>
+                        <div>
+                          <div style={{marginBottom: 32}}>
+                            <Typography variant="subtitle1" gutterBottom>
+                              Permissions
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                              We need some permissions to proceed.
+                            </Typography>
+                          </div>
+                          <div>
+                            <Typography color='secondary' gutterBottom>
+                              Accounts
+                            </Typography>
+                            <List component="nav">
+                              <ListItem>
+                                <ListItemIcon>
+                                  <DoneIcon />
+                                </ListItemIcon>
+                                <ListItemText inset primary="0297 00988200918" />
+                              </ListItem>
+                              <ListItem>
+                                <ListItemIcon>
+                                  <DoneIcon />
+                                </ListItemIcon>
+                                <ListItemText inset primary="0297 00988200920" />
+                              </ListItem>
+                            </List>
+                          </div>
+                        </div>
+                      </Paper>
+                      </div>
+                    )}
+                    { activeStep === 3 && (
+                    <div className={classes.bigContainer}>
+                      <Paper className={classes.paper}>
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                          <div style={{width: 380, textAlign: 'center'}}>
+                            <div style={{marginBottom: 32}}>
+                              <Typography variant="h6" style={{fontWeight: 'bold'}} gutterBottom>
+                                Collecting your data
+                              </Typography>
+                              <Typography variant="body1" gutterBottom>
+                                We are processing your request
+                              </Typography>
+                            </div>
+                            <div>
+                              <Fade
+                                in={loading}
+                                style={{
+                                  transitionDelay: loading ? '800ms' : '0ms',
+                                }}
+                                unmountOnExit
+                              >
+                                <CircularProgress style={{marginBottom: 32, width: 100, height: 100}} />
+                              </Fade>
+                            </div>
+                          </div>
+                        </div>
+                      </Paper>
+                      </div>
+                    )}
+                    { activeStep !== 3 && (
+                      <div className={classes.buttonBar}>
+                      { activeStep !== 2 ? (
+                        <Button
+                        disabled={activeStep === 0}
+                        onClick={this.handleBack}
+                        className={classes.backButton}
+                        size='large'
+                        >
+                          Back
+                        </Button>
+                      ) : (
+                        <Button
+                        disabled={activeStep === 0}
+                        onClick={this.handleBack}
+                        className={classes.backButton}
+                        size='large'
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size='large'
+                        type='submit'
+                        style={this.state.receivingAccount.length ? {background: classes.button, color: 'white'} : {}}
+                        disabled={!this.state.receivingAccount.length}
+                      >
+                        {this.stepActions()}
+                      </Button>
                     </div>
-                  )}
-                  { activeStep !== 3 && (
-                     <div className={classes.buttonBar}>
-                     { activeStep !== 2 ? (
-                       <Button
-                       disabled={activeStep === 0}
-                       onClick={this.handleBack}
-                       className={classes.backButton}
-                       size='large'
-                       >
-                         Back
-                       </Button>
-                     ) : (
-                       <Button
-                       disabled={activeStep === 0}
-                       onClick={this.handleBack}
-                       className={classes.backButton}
-                       size='large'
-                       >
-                         Cancel
-                       </Button>
-                     )}
-                     <Button
-                       variant="contained"
-                       color="primary"
-                       onClick={() => this.props.login({
-                          email: this.state.email,
-                          password: this.state.password
-                       })}
-                       size='large'
-                       style={this.state.receivingAccount.length ? {background: classes.button, color: 'white'} : {}}
-                       disabled={!this.state.receivingAccount.length}
-                     >
-                       {this.stepActions()}
-                     </Button>
-                   </div>
-                  )}
-
-                </div>
+                    )}
+                  </div>
+                </form>
               </Grid>
             </Grid>
           </Grid>
         </div>
+        <CustomizedSnackbars 
+          message={this.props.notification.message}
+          open={this.props.notification.open}
+          variant={this.props.notification.variant}
+          closeNotification={this.props.closeNotification } />
       </React.Fragment>
     )
   }
 }
-
 export default withRouter(withStyles(styles)(Signup))

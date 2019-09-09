@@ -12,6 +12,10 @@ const Menu = [
     pathname: "/signup"
   },
   {
+    label: "Signin",
+    pathname: "/signin"
+  },
+  {
     label: "Wizard",
     pathname: "/Wizard"
   },
