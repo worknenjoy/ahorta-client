@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Back from './common/Back';
 import CustomizedSnackbars from './common/CustomizedSnackbars'
+import Auth from '../modules/Auth'
 
 
 const backgroundShape = require('../images/shape.svg');
@@ -110,8 +111,8 @@ class Signin extends Component {
     labelWidth: 0
   }
 
-  componentDidMount() {
-    //await this.props.logged()
+  async componentDidMount() {
+    await this.props.logged()
   }
 
   handleNext = () => {
@@ -145,13 +146,19 @@ class Signin extends Component {
 
   signUser = (event) => {
     event.preventDefault()
-    this.props.login({
+    return this.props.login({
       email: this.state.email,
       password: this.state.password
     }).then(result => {
       if (result.error) return this.props.openNotification(result.error.message, 'error')
-      this.setState({activateLoading: true})
-      console.log('login reult direct to main page', result)
+      this.props.openNotification('You logged successfully', 'success')
+      const token = result.data.token
+      if(token) {
+        Auth.authenticateUser(result.data.token)
+        this.props.history.push(`/`)
+      } else {
+        return this.props.openNotification('We couldnt log you in, please try again later', 'error')
+      }
     }).catch(e => {
       console.log('error', e)
       return this.props.openNotification(e.message, 'error')

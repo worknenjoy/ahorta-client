@@ -6,6 +6,6 @@ const headers = {
   }
 
 const userActions = genPlainActions('user')
-const userAsyncActions = genAsyncActions('user', 'https://ahorta.herokuapp.com/users', headers)
+const userAsyncActions = genAsyncActions('user', '/users', headers)
 
 export { userActions, userAsyncActions }

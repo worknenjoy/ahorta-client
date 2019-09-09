@@ -1,19 +1,22 @@
 import axios from 'axios'
 import { genPlainActions } from 'react-redux-gen'
 
+import Auth from '../modules/Auth'
+
 const headers = {
-    'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
+    'Authorization': `Bearer ${Auth.getToken()}`,
     'Content-Type': 'application/json'
   }
 
 const loggedActions = genPlainActions('user',['logged'])
 const loginActions = genPlainActions('user',['login'])
+const registerActions = genPlainActions('user', ['register'])
 
 const logged = () => {
   return dispatch => {
     dispatch(loggedActions.logged[0]())
     return axios
-      .get('/authenticated', headers)
+      .get('/authenticated', { headers })
       .then( response => {
         dispatch(loggedActions.logged[1](response.data))
       }).catch( e => {
@@ -35,6 +38,19 @@ const login = (user) => {
   }
 }
 
+const register = (user) => {
+  return dispatch => {
+    dispatch(registerActions.register[0]())
+    return axios
+      .post('/auth/register', user)
+      .then( response => {
+        return dispatch(registerActions.register[1](response.data))
+      }).catch( e => {
+        return dispatch(registerActions.register[2](e))
+      })
+  }
+}
 
 
-export { loggedActions, loginActions, logged, login }
+
+export { loggedActions, loginActions, logged, login, register }

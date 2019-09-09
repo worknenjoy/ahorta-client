@@ -19,9 +19,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DoneIcon from '@material-ui/icons/Done';
-import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import IconButton from '@material-ui/core/IconButton';
 import Fade from '@material-ui/core/Fade';
 import Back from './common/Back';
 import CustomizedSnackbars from './common/CustomizedSnackbars'
@@ -29,7 +27,7 @@ import CustomizedSnackbars from './common/CustomizedSnackbars'
 
 const backgroundShape = require('../images/shape.svg');
 
-const logo = require('../images/logo.svg');
+const logo = require('../images/ahorta-logo.png');
 
 const numeral = require('numeral');
 numeral.defaultFormat('0');
@@ -54,6 +52,10 @@ const styles = theme => ({
   },
   bigContainer: {
     width: '80%'
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   logo: {
     marginBottom: 24,
@@ -105,23 +107,19 @@ const styles = theme => ({
   }
 })
 
-const getSteps = () => {
-  return [
-    'User',
-    'Signin',
-    'Permission'
-  ];
-}
+
 
 class Signup extends Component {
 
   state = {
+    name: '',
     email: '',
     password: '',
-    activeStep: 0,
-    receivingAccount: '',
+    confirmPassword: '',
+    website: '',
+    userType: 'default',
     termsChecked: false,
-    loading: true,
+    loading: false,
     labelWidth: 0,
     errorMessage: false
   }
@@ -129,27 +127,6 @@ class Signup extends Component {
   componentDidMount() {
     //await this.props.logged()
   }
-
-  handleNext = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep + 1,
-    }));
-    if(this.state.activeStep === 2) {
-      setTimeout(() => this.props.history.push('/dashboard'), 5000)
-    }
-  };
-
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
-
-  handleReset = () => {
-    this.setState({
-      activeStep: 0,
-    });
-  };
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -159,38 +136,33 @@ class Signup extends Component {
     this.setState({ termsChecked: event.target.checked });
   };
 
-  stepActions() {
-    if(this.state.activeStep === 0) {
-      return 'Sign in';
-    }
-    if(this.state.activeStep === 1) {
-      return 'Next';
-    }
-    if(this.state.activeStep === 2) {
-      return 'Accept';
-    }
-    return 'Next';
-  }
-
-  signUser = (event) => {
+  registerUser = (event) => {
     event.preventDefault()
-    this.props.login({
+    if(this.state.password !== this.state.confirmPassword) return this.props.openNotification('Password and Password confirm is not matching', 'error')
+    this.setState({loading: true})
+    return this.props.register({
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
+      name: this.state.name,
+      website: this.state.website
     }).then(result => {
+      this.setState({loading: false})
       if(result.error) return this.props.openNotification(result.error.message, 'error')
-      console.log('login reult direct to main page', result)
+      this.props.openNotification('You were successfully registered, now you can signin with your credentials', 'success')
+      this.props.history.push(`/signin`)
+      console.log('register result', result)
     }).catch(e => {
       console.log('error', e)
+      this.setState({loading: false})
       return this.props.openNotification(e.message, 'error')
     })
+
   }
 
   render() {
 
     const { classes } = this.props;
-    const steps = getSteps();
-    const { activeStep, loading } = this.state;
+    const { loading } = this.state;
 
     return (
       <React.Fragment>
@@ -201,42 +173,28 @@ class Signup extends Component {
             <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>
               <Grid item xs={12}>
                 <div className={classes.logo}>
-                  <img width={100} height={100} src={logo} alt="" />
+                  <img width={100} src={logo} alt="" />
                 </div>
                 <form method='POST' 
-                  onSubmit={(event) => this.signUser(event)} 
+                  onSubmit={(event) => this.registerUser(event)} 
                   className={classes.container}
                   noValidate
                   autoComplete="off"
                   >
                   <div className={classes.stepContainer}>
-                    <div className={classes.stepGrid}>
-                      <Stepper classes={{root: classes.stepper}} activeStep={activeStep} alternativeLabel>
-                        {steps.map(label => {
-                          return (
-                            <Step key={label}>
-                              <StepLabel>{label}</StepLabel>
-                            </Step>
-                          );
-                        })}
-                      </Stepper>
-                    </div>
-                    { activeStep === 0 && (
+                    { !loading && (
                     <div className={classes.smallContainer}>
                       <Paper className={classes.paper}>
                         <div>
                           <div style={{marginBottom: 32}}>
                             <Typography variant="subtitle1" style={{fontWeight: 'bold'}} gutterBottom>
-                              Login into your account
+                              Create a new account
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                            Please login with your credentials
+                              Please provide your information to create a new account for Ahortas
                             </Typography>
                           </div>
                           <div>
-                            <Typography style={{textTransform: 'uppercase', marginBottom: 20}} color='secondary' gutterBottom>
-                              First options
-                            </Typography>
                               <TextField
                                 id="email"
                                 name="email"
@@ -259,22 +217,52 @@ class Signup extends Component {
                                 margin="normal"
                                 variant="outlined"
                               />
-                              <FormControl variant="outlined" className={classes.formControl}>
-                              <Select
-                                value={this.state.receivingAccount}
+                              <TextField
+                                id="confirm-password"
+                                name="confirmPassword"
+                                label="Confirm password"
+                                type="password"
+                                className={classes.textField}
+                                
                                 onChange={(event) => this.handleChange(event)}
-                                input={
-                                  <OutlinedInput
-                                    labelWidth={this.state.labelWidth}
-                                    name="receivingAccount"
-                                  />
-                                }
-                              >
-                                <MenuItem value="">
-                                  <em>Select some option</em>
-                                </MenuItem>
-                                <MenuItem value={'first'}>Option 1</MenuItem>
-                                <MenuItem value={'second'}>Other option</MenuItem>
+                                margin="normal"
+                                variant="outlined"
+                              />
+                              <TextField
+                                id="name"
+                                name="name"
+                                label="Your name"
+                                className={classes.textField}
+                                
+                                onChange={(event) => this.handleChange(event)}
+                                margin="normal"
+                                variant="outlined"
+                              />
+                              <TextField
+                                id="website"
+                                name="website"
+                                label="Website"
+                                className={classes.textField}
+                                onChange={(event) => this.handleChange(event)}
+                                margin="normal"
+                                variant="outlined"
+                              />
+                              <FormControl variant="outlined" className={classes.formControl}>
+                                <Select
+                                  value={this.state.userType}
+                                  onChange={(event) => this.handleChange(event)}
+                                  input={
+                                    <OutlinedInput
+                                      labelWidth={this.state.labelWidth}
+                                      name="userType"
+                                    />
+                                  }
+                                >
+                                  <MenuItem value={'default'}>
+                                    <em>What kind of user are you?</em>
+                                  </MenuItem>
+                                  <MenuItem value={'first'}>A maker - I want to prototype new devices</MenuItem>
+                                  <MenuItem value={'second'}>A consumer - I want a easy to use device</MenuItem>
                               </Select>
                             </FormControl>
                           </div>
@@ -282,79 +270,26 @@ class Signup extends Component {
                       </Paper>
                       </div>
                     )}
-                    { activeStep === 1 && (
-                    <div className={classes.smallContainer}>
-                      <Paper className={classes.paper}>
-                        <Grid item container xs={12}>
-                          <Grid item xs={12}>
-                            <Typography variant="subtitle1" gutterBottom>
-                              Sign & confirm
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                              Sign and confirm loan agreement
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                              One text to explain that
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </Paper>
-                      </div>
-                    )}
-                    { activeStep === 2 && (
-                    <div className={classes.smallContainer}>
-                      <Paper className={classes.paper}>
-                        <div>
-                          <div style={{marginBottom: 32}}>
-                            <Typography variant="subtitle1" gutterBottom>
-                              Permissions
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                              We need some permissions to proceed.
-                            </Typography>
-                          </div>
-                          <div>
-                            <Typography color='secondary' gutterBottom>
-                              Accounts
-                            </Typography>
-                            <List component="nav">
-                              <ListItem>
-                                <ListItemIcon>
-                                  <DoneIcon />
-                                </ListItemIcon>
-                                <ListItemText inset primary="0297 00988200918" />
-                              </ListItem>
-                              <ListItem>
-                                <ListItemIcon>
-                                  <DoneIcon />
-                                </ListItemIcon>
-                                <ListItemText inset primary="0297 00988200920" />
-                              </ListItem>
-                            </List>
-                          </div>
-                        </div>
-                      </Paper>
-                      </div>
-                    )}
-                    { activeStep === 3 && (
+                    { loading && (
                     <div className={classes.bigContainer}>
                       <Paper className={classes.paper}>
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                           <div style={{width: 380, textAlign: 'center'}}>
                             <div style={{marginBottom: 32}}>
                               <Typography variant="h6" style={{fontWeight: 'bold'}} gutterBottom>
-                                Collecting your data
+                                Your request is being processed
                               </Typography>
                               <Typography variant="body1" gutterBottom>
-                                We are processing your request
+                                Please wait while we're sending your information
                               </Typography>
                             </div>
                             <div>
                               <Fade
                                 in={loading}
                                 style={{
-                                  transitionDelay: loading ? '800ms' : '0ms',
+                                  transitionDelay: loading ? '1200ms' : '0ms',
                                 }}
+                                timeout={800}
                                 unmountOnExit
                               >
                                 <CircularProgress style={{marginBottom: 32, width: 100, height: 100}} />
@@ -365,39 +300,28 @@ class Signup extends Component {
                       </Paper>
                       </div>
                     )}
-                    { activeStep !== 3 && (
+                    
                       <div className={classes.buttonBar}>
-                      { activeStep !== 2 ? (
+                      
                         <Button
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
-                        className={classes.backButton}
-                        size='large'
-                        >
-                          Back
-                        </Button>
-                      ) : (
-                        <Button
-                        disabled={activeStep === 0}
                         onClick={this.handleBack}
                         className={classes.backButton}
                         size='large'
                         >
                           Cancel
                         </Button>
-                      )}
+                      
                       <Button
                         variant="contained"
                         color="primary"
                         size='large'
                         type='submit'
-                        style={this.state.receivingAccount.length ? {background: classes.button, color: 'white'} : {}}
-                        disabled={!this.state.receivingAccount.length}
+                        style={this.state.userType.length ? {background: classes.button, color: 'white'} : {}}
+                        disabled={this.state.loading}
                       >
-                        {this.stepActions()}
+                        Signup
                       </Button>
                     </div>
-                    )}
                   </div>
                 </form>
               </Grid>
