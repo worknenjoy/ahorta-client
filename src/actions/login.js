@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { genPlainActions } from 'react-redux-gen'
+import { genPlainActions, genActionNames } from 'react-redux-gen'
 
 import Auth from '../modules/Auth'
 
@@ -9,6 +9,7 @@ const headers = {
   }
 
 const loggedActions = genPlainActions('user',['logged'])
+const loggedActionNames = genActionNames('user', ['logged'])
 const loginActions = genPlainActions('user',['login'])
 const registerActions = genPlainActions('user', ['register'])
 
@@ -53,4 +54,4 @@ const register = (user) => {
 
 
 
-export { loggedActions, loginActions, logged, login, register }
+export { loggedActions, loggedActionNames, loginActions, logged, login, register }

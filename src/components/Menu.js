@@ -1,5 +1,9 @@
 const Menu = [
   {
+    label: "Home",
+    pathname: "/"
+  },
+  {
     label: "Devices",
     pathname: "/devices"
   },

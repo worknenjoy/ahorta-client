@@ -123,7 +123,28 @@ class Main extends Component {
         <Topbar />
         <div className={classes.root}>
           <Grid container justify="center">
-            <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>
+            <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
+              <Grid container item xs={12}>
+                  <Grid item xs={12}>
+                    <Paper className={classes.paper}>
+                      <div>
+                        <div className={classes.box}>
+                          <Typography color='secondary' gutterBottom>
+                            Welcome to Ahorta
+                          </Typography>
+                          <Typography variant="body1" gutterBottom>
+                            This is an example of a full-width box
+                          </Typography>
+                        </div>
+                        <div className={classes.alignRight}>
+                          <Button color='primary' variant="contained" className={classes.actionButtom}>
+                            Learn more
+                          </Button>
+                        </div>
+                      </div>
+                    </Paper>
+                </Grid>
+              </Grid>
               <Grid item xs={12} md={4}>
                 <Paper className={classes.paper}>
                   <div className={classes.box}>
@@ -177,27 +198,6 @@ class Main extends Component {
                     </Button>
                   </div>
                 </Paper>
-              </Grid>
-              <Grid container item xs={12}>
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                      <div>
-                        <div className={classes.box}>
-                          <Typography color='secondary' gutterBottom>
-                            Full box
-                          </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            This is an example of a full-width box
-                          </Typography>
-                        </div>
-                        <div className={classes.alignRight}>
-                          <Button color='primary' variant="contained" className={classes.actionButtom}>
-                            Learn more
-                          </Button>
-                        </div>
-                      </div>
-                    </Paper>
-                </Grid>
               </Grid>
             </Grid>
           </Grid>
