@@ -42,7 +42,7 @@ class Devices extends Component {
 
   async componentDidMount() {
     await this.props.logged()
-    const devices = await axios.get(`https://ahorta.herokuapp.com/devices`,
+    const devices = await axios.get(`/devices`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
@@ -51,6 +51,7 @@ class Devices extends Component {
       }
     )
     this.setState({data: devices.data})
+    console.log(devices)
     //const newUser = await this.props.createUser({email: 'alz@worknenjoy.com', password: 'demo'})
     //const user = await this.props.fetchUser(7)
     //const updateUser = await this.props.updateUser(7, {name: 'Alexandre Magno'})
@@ -77,9 +78,8 @@ class Devices extends Component {
                 {data.map(r =>  {
                     return r.deviceId && 
                       <div style={{marginTop: 20}}>
-                        <DeviceItem at={r.Readings && r.Readings[0].createdAt} lastReading={percent(r.Readings && r.Readings[0].value) || 0} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
+                        <DeviceItem user={r.User} at={r.Readings[0] && r.Readings[0].createdAt} lastReading={percent(r.Readings[0] && r.Readings[0].value) || 0} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
                       </div>
-                    
                   })}
               </Grid>
             </Grid>

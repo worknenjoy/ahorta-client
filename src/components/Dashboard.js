@@ -14,7 +14,14 @@ import Avatar from '@material-ui/core/Avatar';
 import SimpleLineChart from './SimpleLineChart';
 import Loading from './common/Loading';
 import SwipeDialog from './dialogs/SwipeDialog';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import SectionHeader from './typo/SectionHeader';
 
+import ImageCard from './cards/ImageCard'
 import Topbar from './Topbar';
 import SensorChart from './SensorChart'
 
@@ -62,7 +69,7 @@ const styles = theme => ({
   },
   outlinedButtom: {
     textTransform: 'uppercase',
-    margin: theme.spacing.unit
+    marginTop: theme.spacing.unit
   },
   actionButtom: {
     textTransform: 'uppercase',
@@ -135,7 +142,7 @@ class Dashboard extends Component {
   async componentDidMount() {
     await this.props.logged()
     const dashboardId = this.props.match.params.id
-    const response = await axios.get(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
+    const response = await axios.get(`/devices/${dashboardId}`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
@@ -144,7 +151,7 @@ class Dashboard extends Component {
       }
     )
     this.setState({device: response.data})
-    this.setState({start: response.data.threshold, amount: response.data.timer / 3600000})
+    this.setState({start: response.data && response.data.threshold, amount: response.data && response.data.timer / 3600000})
     this.updateValues();
   }
 
@@ -159,7 +166,7 @@ class Dashboard extends Component {
   handleChangeAmount = (event, value) => {
     this.setState({amount: value, loading: false});
     const dashboardId = this.props.match.params.id
-    axios.put(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
+    axios.put(`/devices/${dashboardId}`,
       {
         timer: value * 3600000
       },
@@ -187,7 +194,7 @@ class Dashboard extends Component {
   handleChangeStart = (event, value) => {
     this.setState({start: value, loading: false});
     const dashboardId = this.props.match.params.id
-    axios.put(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
+    axios.put(`/devices/${dashboardId}`,
       {
         threshold: value || 0
       },
@@ -232,11 +239,25 @@ class Dashboard extends Component {
                     <Typography variant="body1">
                       Device ID: <strong>{ device && device.deviceId }</strong>
                     </Typography>
-                  </div>
-                  <div>
                     <Button onClick={this.openDialog} variant="outlined" className={classes.outlinedButtom}>
                       How it works?
                     </Button>
+                  </div>
+                  <div>
+                    <Typography variant="body1">
+                      Created by:
+                    </Typography>
+                    <List>
+                      <ListItem onClick={this.toProfile}>
+                        <ListItemAvatar>
+                        <Avatar>
+                            <AccountBoxIcon />
+                        </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={device && device.User && device.User.name} secondary={device && device.User && `user since ${moment(device.User.createdAt).fromNow()}`} />
+                      </ListItem>
+                    </List>
+                    
                   </div>
                 </div>
               </Grid>
@@ -262,9 +283,9 @@ class Dashboard extends Component {
                       </div>
                     </div>
                     <div>
-                      <SimpleLineChart threshold={device.threshold} data={device.Readings && device.Readings.map(r => (
+                      <SimpleLineChart threshold={device && device.threshold} data={device && device.Readings && device.Readings.map(r => (
                         {
-                          value: percent(r.value),
+                          value: percent(r.value) || 0,
                           createdAt: moment(r.createdAt).calendar()
                         }
                       ))} />
@@ -273,146 +294,173 @@ class Dashboard extends Component {
                 </Paper>
             </Grid>
             <Grid item xs={12} md={4}>
-                <Paper className={classes.paper} style={{position: 'relative'}}>
-                  <Loading loading={loading} />
+              <Paper className={classes.paper} style={{position: 'relative'}}>
+                <Loading loading={loading} />
+                <Typography variant="subtitle1" gutterBottom>
+                  Humidity
+                </Typography>
+                <Typography variant="body1">
+                  This is the humidity from the sensor <br /> {device && device.Readings && device.Readings[0] && moment(device.Readings[0].createdAt).calendar()}
+                </Typography>
+                <div>
+                  <SensorChart threshold={start} value={device && device.Readings && device.Readings[0] && percent(device.Readings && device.Readings[0].value)} data={[
+                    { name: device && device.Readings && device.Readings[0] && `${percent(device.Readings[0].value)} %`, value: device && device.Readings && device.Readings[0] && percent(device.Readings && device.Readings[0].value) },
+                    { name: 'Group B', value: device && device.Readings && device.Readings[0] && device.Readings && percent(device.Readings[0].value) === 0 ? 100 : device && device.Readings && device.Readings[0] && percent(device.Readings && device.Readings[0].value) * 18}
+                  ]} />
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12}>
+              <SectionHeader title="Picutres" subtitle="See how your plant it's looks like" />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <ImageCard 
+                image={require('../images/samples/IMG_0323.jpg')} 
+                title='We have flowers on our Basil!'
+                description='We were surprising by flowers on our first basil using Ahorta'
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <ImageCard 
+                image={require('../images/samples/IMG_2473.jpg')} 
+                title='Our first food'
+                description='After the first leaves used in our delicious food'
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <ImageCard 
+                image={require('../images/samples/IMG_4260.jpg')} 
+                title='Full again'
+                description='After some weeks we have the basil ready again'
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <SectionHeader title="Controls" subtitle="For the device owner" />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <div>
                   <Typography variant="subtitle1" gutterBottom>
-                    Humidity
+                    How often the device will measure humidity
                   </Typography>
                   <Typography variant="body1">
-                    This is the humidity from the sensor <br /> {device.Readings && moment(device.Readings[0].createdAt).calendar()}
+                    Use sliders to set the reading period <small>(requires restart)</small>
                   </Typography>
-                  <div>
-                    <SensorChart threshold={start} value={percent(device.Readings && device.Readings[0].value)} data={[
-                      { name: device.Readings && `${percent(device.Readings[0].value)} %`, value: percent(device.Readings && device.Readings[0].value) },
-                      { name: 'Group B', value: device.Readings && percent(device.Readings[0].value) === 0 ? 100 : percent(device.Readings && device.Readings[0].value) * 18}
-                    ]} />
+                  <div className={classes.blockCenter}>
+                    <Typography color='secondary' variant="h6" gutterBottom>
+                      from {numeral(amount).format()} to {numeral(amount).format()} hours
+                    </Typography>
                   </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Paper className={classes.paper}>
                   <div>
-                    <Typography variant="subtitle1" gutterBottom>
-                      How often the device will measure humidity
-                    </Typography>
-                    <Typography variant="body1">
-                      Use sliders to set the reading period <small>(requires restart)</small>
-                    </Typography>
-                    <div className={classes.blockCenter}>
-                      <Typography color='secondary' variant="h6" gutterBottom>
-                        from {numeral(amount).format()} to {numeral(amount).format()} hours
+                    <Slider
+                      disabled
+                      value={amount}
+                      min={1}
+                      max={24}
+                      step={1}
+                      onChange={this.handleChangeAmount}
+                    />
+                  </div>
+                  <div className={classes.rangeLabel}>
+                    <div>
+                      <Typography variant="subtitle2">
+                        1 hour
                       </Typography>
                     </div>
                     <div>
-                      <Slider
-                        disabled
-                        value={amount}
-                        min={1}
-                        max={24}
-                        step={1}
-                        onChange={this.handleChangeAmount}
-                      />
-                    </div>
-                    <div className={classes.rangeLabel}>
-                      <div>
-                        <Typography variant="subtitle2">
-                          1 hour
-                        </Typography>
-                      </div>
-                      <div>
-                        <Typography variant="subtitle2">
-                          24 hours
-                        </Typography>
-                      </div>
+                      <Typography variant="subtitle2">
+                        24 hours
+                      </Typography>
                     </div>
                   </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Paper className={classes.paper}>
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <div>
+                  <Typography variant="subtitle1" gutterBottom>
+                    How often you want to be notified
+                  </Typography>
+                  <Typography variant="body1">
+                    Set the periodicity to receive notifications
+                  </Typography>
+                  <div className={classes.blockCenter}>
+                    <Typography color='secondary' variant="h6" gutterBottom>
+                      {period} hours
+                    </Typography>
+                  </div>
                   <div>
-                    <Typography variant="subtitle1" gutterBottom>
-                      How often you want to be notified
-                    </Typography>
-                    <Typography variant="body1">
-                      Set the periodicity to receive notifications
-                    </Typography>
-                    <div className={classes.blockCenter}>
-                      <Typography color='secondary' variant="h6" gutterBottom>
-                        {period} hours
+                    <Slider
+                      disabled
+                      value={period}
+                      min={1}
+                      max={24}
+                      step={1}
+                      onChange={this.handleChangePeriod}
+                    />
+                  </div>
+                  <div className={classes.rangeLabel}>
+                    <div>
+                      <Typography variant="subtitle2">
+                        1 hour
                       </Typography>
                     </div>
                     <div>
-                      <Slider
-                        disabled
-                        value={period}
-                        min={1}
-                        max={24}
-                        step={1}
-                        onChange={this.handleChangePeriod}
-                      />
-                    </div>
-                    <div className={classes.rangeLabel}>
-                      <div>
-                        <Typography variant="subtitle2">
-                          1 hour
-                        </Typography>
-                      </div>
-                      <div>
-                        <Typography variant="subtitle2">
-                          24 hours
-                        </Typography>
-                      </div>
+                      <Typography variant="subtitle2">
+                        24 hours
+                      </Typography>
                     </div>
                   </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Paper className={classes.paper}>
+                </div>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Paper className={classes.paper}>
+                <div>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Threshold
+                  </Typography>
+                  <Typography variant="body1">
+                    What's the target humidity for this plant?
+                  </Typography>
+                  <div className={classes.blockCenter}>
+                    <Typography color='secondary' variant="h6" gutterBottom>
+                      {start} %
+                    </Typography>
+                  </div>
                   <div>
-                    <Typography variant="subtitle1" gutterBottom>
-                      Threshold
-                    </Typography>
-                    <Typography variant="body1">
-                      What's the target humidity for this plant?
-                    </Typography>
-                    <div className={classes.blockCenter}>
-                      <Typography color='secondary' variant="h6" gutterBottom>
-                        {start} %
+                    <Slider
+                      disabled
+                      value={start}
+                      min={0}
+                      max={100}
+                      step={1}
+                      onChange={this.handleChangeStart}
+                    />
+                  </div>
+                  <div className={classes.rangeLabel}>
+                    <div>
+                      <Typography variant="subtitle2">
+                        0 %
                       </Typography>
                     </div>
                     <div>
-                      <Slider
-                        disabled
-                        value={start}
-                        min={0}
-                        max={100}
-                        step={1}
-                        onChange={this.handleChangeStart}
-                      />
-                    </div>
-                    <div className={classes.rangeLabel}>
-                      <div>
-                        <Typography variant="subtitle2">
-                          0 %
-                        </Typography>
-                      </div>
-                      <div>
-                        <Typography variant="subtitle2">
-                          100 %
-                        </Typography>
-                      </div>
+                      <Typography variant="subtitle2">
+                        100 %
+                      </Typography>
                     </div>
                   </div>
-                </Paper>
-              </Grid>
+                </div>
+              </Paper>
             </Grid>
           </Grid>
-          <SwipeDialog
-            open={howItWorksDialog}
-            onClose={this.dialogClose} />
-        </div>
-      </React.Fragment>
+        </Grid>
+        <SwipeDialog
+          open={howItWorksDialog}
+          onClose={this.dialogClose} />
+      </div>
+    </React.Fragment>
     )
   }
 }

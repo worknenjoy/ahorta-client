@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SpaIcon from '@material-ui/icons/Spa';
 import ButtonBar from '../buttons/ButtonBar';
 import moment from 'moment';
@@ -75,8 +80,12 @@ const styles = theme => ({
 
 class DeviceItem extends Component {
 
+  componentDidMount() {
+    console.log(this.props.user)
+  }
+
   render() {
-    const { classes, ssid, deviceId, name, onAction, lastReading, threshold, at } = this.props;
+    const { classes, user, ssid, deviceId, name, onAction, lastReading, threshold, at } = this.props;
 
     return (
       <div className={classes.root}>
@@ -88,14 +97,26 @@ class DeviceItem extends Component {
               </Avatar>
             </div>
             <div className={classes.baseline}>
-              <div className={classes.inline}>
-                <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
-                  Network name
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  {ssid}
-                </Typography>
-              </div>
+              {ssid && 
+                <div className={classes.inline}>
+                  <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
+                    Network name
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>
+                    {ssid}
+                  </Typography>
+                </div>
+              }
+              {user &&
+                <div className={classes.inline}>
+                  <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
+                    User
+                  </Typography>
+                  <Typography variant="h6" gutterBottom>
+                    {user.name}
+                  </Typography>
+                </div>
+              }
               <div className={classes.inline}>
                 <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
                   Device ID
