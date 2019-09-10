@@ -4,24 +4,26 @@ import { genPlainActions, genActionNames } from 'react-redux-gen'
 import Auth from '../modules/Auth'
 
 const headers = {
-    'Authorization': `Bearer ${Auth.getToken()}`,
-    'Content-Type': 'application/json'
-  }
+  'Authorization': `Bearer ${Auth.getToken()}`,
+  'Content-Type': 'application/json'
+}
 
-const loggedActions = genPlainActions('user',['logged'])
-const loggedActionNames = genActionNames('user', ['logged'])
-const loginActions = genPlainActions('user',['login'])
-const registerActions = genPlainActions('user', ['register'])
+const loginActionNames = genActionNames('user', ['logged', 'login', 'logout'])
+const loginActions = genPlainActions('user',['logged', 'login', 'logout', 'register'])
 
 const logged = () => {
   return dispatch => {
-    dispatch(loggedActions.logged[0]())
+    dispatch(loginActions.logged[0]())
     return axios
-      .get('/authenticated', { headers })
+      .get('/authenticated', { headers: {
+        'Authorization': `Bearer ${Auth.getToken()}`,
+        'Content-Type': 'application/json'
+      }
+      })
       .then( response => {
-        dispatch(loggedActions.logged[1](response.data))
+        return dispatch(loginActions.logged[1](response.data))
       }).catch( e => {
-        dispatch(loggedActions.logged[2](e))
+        return dispatch(loginActions.logged[2](e))
       })
   }
 }
@@ -39,19 +41,29 @@ const login = (user) => {
   }
 }
 
+const logout = () => {
+  return (dispatch) => {
+    dispatch(loginActions.logout[0]())
+    if(Auth.deauthenticateUser()) {
+      return dispatch(loginActions.logout[1]({}))
+    }
+    return dispatch(loginActions.logout[2](new Error('we have an error to logout, try again later')))
+  }
+}
+
 const register = (user) => {
   return dispatch => {
-    dispatch(registerActions.register[0]())
+    dispatch(loginActions.register[0]())
     return axios
       .post('/auth/register', user)
       .then( response => {
-        return dispatch(registerActions.register[1](response.data))
+        return dispatch(loginActions.register[1](response.data))
       }).catch( e => {
-        return dispatch(registerActions.register[2](e))
+        return dispatch(loginActions.register[2](e))
       })
   }
 }
 
 
 
-export { loggedActions, loggedActionNames, loginActions, logged, login, register }
+export { loginActionNames, loginActions, logged, login, logout, register }

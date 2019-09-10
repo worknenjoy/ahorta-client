@@ -8,6 +8,13 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import InstructionDialog from './dialogs/InstructionDialog';
 import SwipeDialog from './dialogs/SwipeDialog';
+import SectionHeader from './typo/SectionHeader';
+import SubscribeFrom from 'react-mailchimp-subscribe'
+import ImageCard from './cards/ImageCard'
+import {
+  red,
+  green
+} from '@material-ui/core/colors'
 
 import Topbar from './Topbar';
 
@@ -53,7 +60,7 @@ const styles = theme => ({
   actionButtom: {
     textTransform: 'uppercase',
     margin: theme.spacing.unit,
-    width: 152
+    width: 250
   },
   blockCenter: {
     padding: theme.spacing.unit * 2,
@@ -90,6 +97,35 @@ const styles = theme => ({
   }
 });
 
+const formProps = {
+  url: '//truppie.us17.list-manage.com/subscribe/post?u=bb76ecd5ef5cbbc5e60701321&amp;id=7582e094e3',
+  messages: {
+    inputPlaceholder: 'Leave your email',
+    btnLabel: 'I want one for me',
+    sending: 'subscribing',
+    success: 'Thanks for your interest. We will contact you to provide more details',
+    error: 'We couldnt register your email. Please check if the address is correct or try again later'
+  },
+  styles: {
+    sending: {
+      fontSize: 14,
+      color: green['900']
+    },
+    success: {
+      fontSize: 14,
+      color: green['900']
+    },
+    error: {
+      fontSize: 14,
+      backgroundColor: green['200'],
+      display: 'inline-block',
+      opacity: 0.8,
+      padding: 10,
+      color: red['700']
+    }
+  }
+}
+
 class Main extends Component {
 
   state = {
@@ -97,7 +133,9 @@ class Main extends Component {
     getStartedDialog: false
   };
 
-  componentDidMount() {}
+  async componentDidMount() {
+    await this.props.logged()
+  }
 
   openDialog = (event) => {
     this.setState({learnMoredialog: true});
@@ -116,11 +154,12 @@ class Main extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, loggedUser, history } = this.props;
+    const currentPath = this.props.location.pathname
     return (
       <React.Fragment>
         <CssBaseline />
-        <Topbar />
+        <Topbar currentPath={currentPath} user={loggedUser && loggedUser.data.user} history={this.props.history} />
         <div className={classes.root}>
           <Grid container justify="center">
             <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
@@ -133,69 +172,57 @@ class Main extends Component {
                             Welcome to Ahorta
                           </Typography>
                           <Typography variant="body1" gutterBottom>
-                            This is an example of a full-width box
+                            Ahorta is a simple IOT device that connect to your wifi and read the humidity values of your plant and notify you, so you can have a better way to know the needs of your plants and the best way to provide water, no more, no less
+                          </Typography>
+                          <Typography variant="body2" gutterBottom>
+                            We still under tests and looking for our first users to get yours at home and to make part of the community
                           </Typography>
                         </div>
                         <div className={classes.alignRight}>
-                          <Button color='primary' variant="contained" className={classes.actionButtom}>
-                            Learn more
+                          <Button onClick={() => history.push('/devices')} color='secondary' variant="outlined" className={classes.actionButtom}>
+                            See our devices
+                          </Button>
+                          <Button onClick={() => history.push('/signin')} color='primary' variant="contained" className={classes.actionButtom}>
+                            Sign with your account
+                          </Button>
+                          <Button onClick={() => history.push('/signup')} color='primary' variant="contained" className={classes.actionButtom}>
+                            Create an account
                           </Button>
                         </div>
                       </div>
                     </Paper>
                 </Grid>
               </Grid>
-              <Grid item xs={12} md={4}>
-                <Paper className={classes.paper}>
-                  <div className={classes.box}>
-                    <Typography style={{textTransform: 'uppercase'}} color='secondary' gutterBottom>
-                      First title
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                      A first title style <br/> with two lines
-                    </Typography>
-                  </div>
-                  <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button color='primary' variant="contained" className={classes.actionButtom}>
-                      Learn more
-                    </Button>
-                  </div>
-                </Paper>
+              <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
+                <Grid item xs={12} md={4}>
+                  <ImageCard 
+                    image={require('../images/samples/IMG_3061.jpg')} 
+                    title='A prototype for your plant'
+                    description='We are developing our first version of a new device that will help you to take care of your plant'
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <ImageCard 
+                    image={require('../images/samples/IMG_3143.jpg')} 
+                    title='Monitoring your home garden'
+                    description='Explore and discover by anaylising the humidity of your plants'
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <ImageCard 
+                    image={require('../images/samples/IMG_4264.jpg')} 
+                    title='Always green'
+                    description='A plant can be complex, so know yours and keep it always green in your home'
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12}>
+                <SectionHeader title="I want to know more about" subtitle="Subscribe to stay updated for our first release" />
                 <Paper className={classes.paper}>
-                  <div className={classes.box}>
-                    <Typography style={{textTransform: 'uppercase'}} color='secondary' gutterBottom>
-                      Another box
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                      A default box
-                    </Typography>
-                  </div>
-                  <div style={{display: 'flex', justifyContent: 'flex-end'}}>
-                    <Button color='primary' variant="contained" className={classes.actionButtom}>
-                      Learn more
-                    </Button>
-                  </div>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <Paper className={classes.paper}>
-                  <div className={classes.box}>
-                    <Typography style={{textTransform: 'uppercase'}} color='secondary' gutterBottom>
-                      A box with a carousel
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                      If you click in Getting Started, you will see a nice carousel
-                    </Typography>
-                  </div>
-                  <div className={classes.alignRight}>
-                    <Button onClick={this.openDialog}  variant="outlined" className={classes.actionButtom}>
-                      Learn more
-                    </Button>
-                    <Button onClick={this.openGetStartedDialog} color='primary' variant="contained" className={classes.actionButtom}>
-                      Dashboard
-                    </Button>
+                  <div style={{textAlign: 'center'}}>
+                    <div className='subscribe-form'>
+                      <SubscribeFrom { ...formProps} />
+                    </div>
                   </div>
                 </Paper>
               </Grid>

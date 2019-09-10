@@ -7,18 +7,10 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DoneIcon from '@material-ui/icons/Done';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Back from './common/Back';
@@ -128,6 +120,10 @@ class Signup extends Component {
     //await this.props.logged()
   }
 
+  handleBack = () => {
+    this.props.history.push('/')
+  }
+
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -161,7 +157,7 @@ class Signup extends Component {
 
   render() {
 
-    const { classes } = this.props;
+    const { classes, history } = this.props;
     const { loading } = this.state;
 
     return (
@@ -261,8 +257,8 @@ class Signup extends Component {
                                   <MenuItem value={'default'}>
                                     <em>What kind of user are you?</em>
                                   </MenuItem>
-                                  <MenuItem value={'first'}>A maker - I want to prototype new devices</MenuItem>
-                                  <MenuItem value={'second'}>A consumer - I want a easy to use device</MenuItem>
+                                  <MenuItem value={'first'}>A maker nerd geek programmer - I want to prototype new devices</MenuItem>
+                                  <MenuItem value={'second'}>A curious consumer biologist - I want a easy way to track my plant</MenuItem>
                               </Select>
                             </FormControl>
                           </div>

@@ -12,6 +12,10 @@ import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { Link as MaterialLink } from '@material-ui/core'
 import Menu from './Menu';
@@ -83,10 +87,14 @@ const styles = theme => ({
   }
 })
 
+function ListItemLink(props) {
+  return <ListItem button component="a" {...props} />;
+}
+
 class Topbar extends Component {
 
   state = {
-    value: 0,
+    value: null,
     menuDrawer: false
   };
 
@@ -106,23 +114,26 @@ class Topbar extends Component {
     window.scrollTo(0, 0);
   }
 
-  current = () => {
-    if(this.props.currentPath === '/home') {
-      return 0
-    }
-    if(this.props.currentPath === '/dashboard') {
-      return 1
-    }
-    if(this.props.currentPath === '/signup') {
-      return 2
-    }
-    if(this.props.currentPath === '/wizard') {
-      return 3
-    }
-    if(this.props.currentPath === '/cards') {
-      return 4
-    }
+  toProfile = () => {
+    this.props.history.push({ pathname: '/profile' })
+  }
 
+  current = () => {
+    if(this.props.currentPath === '/') {
+      return 0
+    } 
+    if(this.props.currentPath === '/devices') {
+      return 1
+    } 
+    if(this.props.currentPath === '/users') {
+      return 2
+    } 
+    if(this.props.currentPath === '/signup') {
+      return 3
+    } 
+    if(this.props.currentPath === '/signin') {
+      return 4
+    } 
   }
 
   render() {
@@ -132,7 +143,7 @@ class Topbar extends Component {
     return (
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
-            <Grid container spacing={24} alignItems="baseline">
+            <Grid container spacing={2} alignItems="baseline">
               <Grid item xs={12} className={classes.flex}>
                   <div className={classes.inline}>
                     <Typography variant="h6" color="inherit" noWrap>
@@ -162,6 +173,7 @@ class Topbar extends Component {
                                 <ListItemText primary={item.label} />
                               </ListItem>
                             ))}
+                            <Divider />
                           </List>
                         </SwipeableDrawer>
                         <Tabs
@@ -179,6 +191,20 @@ class Topbar extends Component {
                   )}
               </Grid>
             </Grid>
+            { this.props.user && 
+            <div style={{width: '45%'}}>
+              <List style={{width: '40%'}}>
+                <ListItemLink onClick={this.toProfile}>
+                  <ListItemAvatar>
+                  <Avatar>
+                      <AccountBoxIcon />
+                  </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary={this.props.user.name} secondary={this.props.user.email} />
+                </ListItemLink>
+              </List>
+            </div>
+            }
         </Toolbar>
       </AppBar>
     )

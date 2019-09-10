@@ -60,14 +60,14 @@ class Users extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, login } = this.props
     const { users } = this.props
     const currentPath = this.props.location.pathname
 
     return (
       <React.Fragment>
         <CssBaseline />
-        <Topbar currentPath={currentPath} />
+        <Topbar currentPath={currentPath} user={login && login.data.user} history={this.props.history} />
         <div className={classes.root}>
           <Grid container justify="center"> 
             <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>            

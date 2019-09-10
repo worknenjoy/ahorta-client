@@ -33,6 +33,11 @@ class Auth {
     static deauthenticateUser () {
       localStorage.removeItem('token')
       localStorage.removeItem('referer')
+      if(localStorage.getItem('token') && localStorage.getItem('referer')) {
+        return false
+      } else {
+        return true
+      }
     }
   
     /**

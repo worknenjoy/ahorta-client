@@ -6,7 +6,7 @@ import Signup from '../components/Signup'
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
-    logged: state.logged,
+    loggedUser: state.login,
     notification: state.notification
   }
 }

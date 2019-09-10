@@ -1,18 +1,23 @@
 import React from 'react'
 import { Route, HashRouter, Switch, Redirect } from 'react-router-dom'
-import Dashboard from './components/Dashboard'
-import Main from './components/Main'
+import PrivateRoute from './components/session/private-route'
+import Session from './components/session/session'
+import Dashboard from './containers/dashboard'
+import Main from './containers/main'
 import Devices from './containers/devices'
 import Users from './containers/users'
 import Signup from './containers/signup'
 import Signin from './containers/signin'
 import Wizard from './components/Wizard'
+import Profile from './containers/profile'
 import ScrollToTop from './components/ScrollTop'
 
 export default props => (
     <HashRouter>
       <ScrollToTop>
         <Switch>
+          <PrivateRoute path='/profile' component={ Profile } />
+          <Route exact path='/token/:token' component={ Session } />
           <Route exact path='/devices' component={ Devices } />
           <Route exact path='/users' component={ Users } />
           <Route exact path='/signup' component={ Signup } />

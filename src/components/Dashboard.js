@@ -12,7 +12,6 @@ import Slider from '@material-ui/lab/Slider';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import SimpleLineChart from './SimpleLineChart';
-import Months from './common/Months';
 import Loading from './common/Loading';
 import SwipeDialog from './dialogs/SwipeDialog';
 
@@ -23,8 +22,6 @@ import { Percent as percent } from '../modules/Percent'
 
 const numeral = require('numeral');
 numeral.defaultFormat('0');
-
-
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -117,8 +114,6 @@ const styles = theme => ({
   }
 });
 
-const monthRange = Months;
-
 class Dashboard extends Component {
 
   state = {
@@ -137,9 +132,10 @@ class Dashboard extends Component {
 
   
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.props.logged()
     const dashboardId = this.props.match.params.id
-    axios.get(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
+    const response = await axios.get(`https://ahorta.herokuapp.com/devices/${dashboardId}`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
@@ -147,14 +143,8 @@ class Dashboard extends Component {
         }
       }
     )
-    .then((response) => {
-      console.log('response', response);
-      this.setState({device: response.data})
-      this.setState({start: response.data.threshold, amount: response.data.timer / 3600000})
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    this.setState({device: response.data})
+    this.setState({start: response.data.threshold, amount: response.data.timer / 3600000})
     this.updateValues();
   }
 
@@ -218,17 +208,17 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, loggedUser, history } = this.props;
     const { amount, period, start, loading, device, howItWorksDialog } = this.state;
     const currentPath = this.props.location.pathname
 
     return (
       <React.Fragment>
         <CssBaseline />
-        <Topbar currentPath={currentPath} />
+        <Topbar currentPath={currentPath} user={loggedUser && loggedUser.data.user} history={history} />
         <div className={classes.root}>
           <Grid container justify="center">
-            <Grid spacing={24} alignItems="flex-start" justify="center" container className={classes.grid}>
+            <Grid spacing={2} alignItems="flex-start" justify="center" container className={classes.grid}>
               <Grid item xs={12}>
                 <div className={classes.topBar}>
                   <div className={classes.block}>

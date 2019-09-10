@@ -7,10 +7,12 @@ const Menu = [
     label: "Devices",
     pathname: "/devices"
   },
+  /*
   {
     label: "Users",
     pathname: "/users"
   },
+  */
   {
     label: "Signup",
     pathname: "/signup"
@@ -19,10 +21,12 @@ const Menu = [
     label: "Signin",
     pathname: "/signin"
   },
+  /* this will be the orders
   {
     label: "Wizard",
     pathname: "/Wizard"
   },
+  */
   {
     label: "Github",
     pathname: "https://github.com/worknenjoy/ahorta-client",

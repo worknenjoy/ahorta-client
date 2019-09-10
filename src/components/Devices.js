@@ -1,16 +1,11 @@
 import React,  { Component } from 'react';
+import axios from 'axios'
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import DeviceItem from './cards/DeviceItem';
-import Topbar from './Topbar';
 import SectionHeader from './typo/SectionHeader';
-import SubscribeFrom from 'react-mailchimp-subscribe'
-import {
-  red,
-  green
-} from '@material-ui/core/colors'
+import Topbar from './Topbar';
 
 import './mailchimp.css'
 import { Percent as percent } from '../modules/Percent'
@@ -39,35 +34,6 @@ const styles = theme => ({
   }
 })
 
-const formProps = {
-  url: '//truppie.us17.list-manage.com/subscribe/post?u=bb76ecd5ef5cbbc5e60701321&amp;id=7582e094e3',
-  messages: {
-    inputPlaceholder: 'Leave your email',
-    btnLabel: 'I want one for me',
-    sending: 'subscribing',
-    success: 'Thanks for your interest. We will contact you to provide more details',
-    error: 'We couldnt register your email. Please check if the address is correct or try again later'
-  },
-  styles: {
-    sending: {
-      fontSize: 14,
-      color: green['900']
-    },
-    success: {
-      fontSize: 14,
-      color: green['900']
-    },
-    error: {
-      fontSize: 14,
-      backgroundColor: green['200'],
-      display: 'inline-block',
-      opacity: 0.8,
-      padding: 10,
-      color: red['700']
-    }
-  }
-}
-
 class Devices extends Component {
 
   state = {
@@ -75,7 +41,8 @@ class Devices extends Component {
   }
 
   async componentDidMount() {
-    /*axios.get(`https://ahorta.herokuapp.com/devices`,
+    await this.props.logged()
+    const devices = await axios.get(`https://ahorta.herokuapp.com/devices`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
@@ -83,14 +50,7 @@ class Devices extends Component {
         }
       }
     )
-    .then((response) => {
-      console.log('response', response);
-      this.setState({data: response.data})
-    })
-    .catch(error => {
-      console.log(error);
-    });*/
-    await this.props.listUsers()
+    this.setState({data: devices.data})
     //const newUser = await this.props.createUser({email: 'alz@worknenjoy.com', password: 'demo'})
     //const user = await this.props.fetchUser(7)
     //const updateUser = await this.props.updateUser(7, {name: 'Alexandre Magno'})
@@ -101,14 +61,14 @@ class Devices extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, loggedUser } = this.props
     const { data } = this.state
     const currentPath = this.props.location.pathname
 
     return (
       <React.Fragment>
         <CssBaseline />
-        <Topbar currentPath={currentPath} />
+        <Topbar currentPath={currentPath} user={loggedUser && loggedUser.data.user} history={this.props.history} />
         <div className={classes.root}>
           <Grid container justify="center"> 
             <Grid spacing={24} alignItems="center" justify="center" container className={classes.grid}>            
@@ -121,16 +81,6 @@ class Devices extends Component {
                       </div>
                     
                   })}
-              </Grid>
-              <Grid item xs={12}>
-                <SectionHeader title="Create yours" subtitle="Subscribe to know more how to create your own" />
-                <Paper className={classes.paper}>
-                  <div style={{textAlign: 'center'}}>
-                    <div className='subscribe-form'>
-                      <SubscribeFrom { ...formProps} />
-                    </div>
-                  </div>
-                </Paper>
               </Grid>
             </Grid>
           </Grid>

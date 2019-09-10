@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import { login, logged } from '../actions/login'
 import { openNotification, closeNotification } from '../actions/notification'
-import Signin from '../components/Signin'
+import Main from '../components/Main'
 
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
-    loggedUser: state.logged,
+    loggedUser: state.login,
     notification: state.notification
   }
 }
@@ -20,4 +20,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signin)
+export default connect(mapStateToProps, mapDispatchToProps)(Main)

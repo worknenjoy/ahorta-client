@@ -125,10 +125,8 @@ class Signin extends Component {
   };
 
   handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
+    this.props.history.push('/')
+  }
 
   handleReset = () => {
     this.setState({
@@ -151,11 +149,9 @@ class Signin extends Component {
       password: this.state.password
     }).then(result => {
       if (result.error) return this.props.openNotification(result.error.message, 'error')
-      this.props.openNotification('You logged successfully', 'success')
       const token = result.data.token
       if(token) {
-        Auth.authenticateUser(result.data.token)
-        this.props.history.push(`/`)
+        this.props.history.push(`/token/${result.data.token}`)
       } else {
         return this.props.openNotification('We couldnt log you in, please try again later', 'error')
       }
