@@ -75,7 +75,7 @@ const styles = theme => ({
 class UserItem extends Component {
 
   componentDidMount() {
-    console.log(this.props)
+    //console.log(this.props)
   }
 
   render() {
