@@ -16,6 +16,8 @@ import {
   green
 } from '@material-ui/core/colors'
 
+import CustomizedSnackbars from './common/CustomizedSnackbars'
+
 import Topbar from './Topbar';
 
 const backgroundShape = require('../images/shape.svg');
@@ -183,7 +185,7 @@ class Main extends Component {
                             See our devices
                           </Button>
                           <Button onClick={() => history.push('/signin')} color='primary' variant="contained" className={classes.actionButtom}>
-                            Sign with your account
+                            Signin to your account
                           </Button>
                           <Button onClick={() => history.push('/signup')} color='primary' variant="contained" className={classes.actionButtom}>
                             Create an account
@@ -236,6 +238,11 @@ class Main extends Component {
             onClose={this.closeGetStartedDialog}
           />
         </div>
+        <CustomizedSnackbars
+          message={this.props.notification.message}
+          open={this.props.notification.open}
+          variant={this.props.notification.variant}
+          closeNotification={this.props.closeNotification} />
       </React.Fragment>
     )
   }

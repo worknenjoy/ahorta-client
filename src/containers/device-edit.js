@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { userAsyncActions } from '../actions/user'
 import { logged, logout } from '../actions/login'
 import { openNotification, closeNotification } from '../actions/notification'
-import Profile from '../components/Profile'
+import DeviceEdit from '../components/DeviceEdit'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -22,4 +22,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile)
+export default connect(mapStateToProps, mapDispatchToProps)(DeviceEdit)

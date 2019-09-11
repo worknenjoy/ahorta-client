@@ -63,7 +63,7 @@ const styles = theme => ({
     }
   },
   inlineRight: {
-    width: '30%',
+    width: '60%',
     textAlign: 'right',
     marginLeft: 50,
     alignSelf: 'flex-end',
@@ -85,7 +85,7 @@ class DeviceItem extends Component {
   }
 
   render() {
-    const { classes, user, ssid, deviceId, name, onAction, lastReading, threshold, at } = this.props;
+    const { classes, user, ssid, deviceId, name, onAction, onEdit, lastReading, threshold, at } = this.props;
 
     return (
       <div className={classes.root}>
@@ -151,7 +151,7 @@ class DeviceItem extends Component {
               <Typography variant="h4" gutterBottom>
                 {name}
               </Typography>
-              <ButtonBar onAction={onAction} />
+              <ButtonBar onAction={onAction} onEdit={onEdit} />
             </div>
           </div>
         </Paper>

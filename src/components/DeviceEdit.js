@@ -9,15 +9,14 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import InstructionDialog from './dialogs/InstructionDialog';
 import SwipeDialog from './dialogs/SwipeDialog';
-
+import TextField from '@material-ui/core/TextField';
 import CustomizedSnackbars from './common/CustomizedSnackbars';
-import SectionHeader from './typo/SectionHeader';
-import { Percent as percent } from '../modules/Percent'
+
+import SectionHeader from './typo/SectionHeader'
 import ProfileMenu from './profile/ProfileMenu'
 import Topbar from './Topbar';
-import DeviceItem from './cards/DeviceItem';
 
-const backgroundShape = require('../images/shape.svg');
+const backgroundShape = require('../images/shape.svg')
 
 const styles = theme => ({
   root: {
@@ -96,18 +95,17 @@ const styles = theme => ({
   }
 });
 
-class Profile extends Component {
+class DeviceEdit extends Component {
 
   state = {
-    learnMoredialog: false,
-    getStartedDialog: false,
-    data: []
+    name: '',
+    data: {}
   };
 
   async componentDidMount() {
-    const logged = await this.props.logged()
-    const user = await this.props.fetchUser(logged.data.user.id)
-    const devices = await axios.get(`/devices`,
+    await this.props.logged()
+    const deviceId = this.props.match.params.id
+    const myDevice = await axios.get(`/devices/${deviceId}`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
@@ -115,9 +113,9 @@ class Profile extends Component {
         }
       }
     )
-    this.setState({data: devices.data})
-    const myDevices = devices.data.filter( d => d.UserId === user.data.id)
-    this.setState({data: myDevices})
+    console.log(myDevice)
+    this.setState({ data: myDevice.data, name: myDevice.data.name })
+    console.log(myDevice)
   }
 
   openDialog = (event) => {
@@ -136,24 +134,36 @@ class Profile extends Component {
     this.setState({ getStartedDialog: false });
   }
 
-  logout = async () => {
-    await this.props.logout()
-    this.props.openNotification('You were signed to your account successfully', 'success')
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
-  onAction = (id) => {
-    this.props.history.push(`/dashboard/${id}`)
-  }
-
-  onEdit = (id) => {
-    this.props.history.push(`/dashboard/edit/${id}`)
+  onSubmit = event => {
+    event.preventDefault()
+    const deviceId = this.props.match.params.id
+    axios.put(`/devices/${deviceId}`, 
+      {
+        name: this.state.name
+      },
+      {
+        headers: {
+          'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
+          'Content-Type': 'application/json'
+        } 
+      }
+    ).then(response => {
+      console.log(response)
+      this.props.openNotification('Your device information was updated successfully', 'success')
+      this.props.history.push(`/profile`)
+    }).catch( e => {
+      this.props.openNotification('There was an error to update your information, please try again later', 'error')
+    })
   }
 
   render() {
-    const { classes, history, logged, loggedUser  } = this.props;
+    const { classes, history, logged, loggedUser } = this.props;
     const { data } = this.state
     const currentPath = this.props.location.pathname
-    console.log('history', history)
 
     return (
       <React.Fragment>
@@ -163,45 +173,57 @@ class Profile extends Component {
           <Grid container justify="center">
             <Grid spacing={4} alignItems="center" justify="flex-start" container className={classes.grid}>
               <Grid item xs={3}>
-                <ProfileMenu history={history} onLogout={this.logout} logged={logged} history={history} user={loggedUser && loggedUser.data.user} />
+                <ProfileMenu onLogout={this.logout} logged={logged} history={history} user={loggedUser && loggedUser.data.user} />
               </Grid>
               <Grid item xs={9}>
                 <SectionHeader title="Devices" subtitle="Ahorta devices created" />
-                {data && data.map(r =>  {
-                    return r.deviceId && 
-                      <div style={{marginTop: 20}}>
-                        <DeviceItem 
-                          user={r.User} 
-                          at={r.Readings[0] && r.Readings[0].createdAt}
-                          lastReading={percent(r.Readings[0] && r.Readings[0].value) || 0}
-                          threshold={r.threshold} ssid={r.ssid}
-                          deviceId={r.deviceId} name={r.name}
-                          onAction={() => this.onAction(r.id)} 
-                          onEdit={() => this.onEdit(r.id)} 
+                {data &&
+                  <div style={{ marginTop: 20 }}>
+                    <Paper className={classes.paper}>
+                      <form method='POST' 
+                        onSubmit={this.onSubmit}
+                      >
+                        <TextField
+                          id="name"
+                          name="name"
+                          label="Name"
+                          value={this.state.name}
+                          className={classes.textField}
+                          onChange={this.handleChange}
+                          margin="normal"
+                          variant="outlined"
+                          autoFocus
                         />
-                      </div>
-                  })}
-              </Grid>
-              {!data && !data.length && 
-              <Grid item xs={8}>
-                <Paper className={classes.paper}>
-                  <div>
-                    <div className={classes.box}>
-                      <Typography color='secondary' gutterBottom>
-                        Welcome to Ahorta
-                        </Typography>
-                      <Typography variant="body1" gutterBottom>
-                        This is an example of a full-width box
-                        </Typography>
-                    </div>
-                    <div className={classes.alignRight}>
-                      <Button color='primary' variant="contained" className={classes.actionButtom}>
-                        Learn more
-                      </Button>
-                    </div>
+                        <div className={classes.alignRight}>
+                          <Button type='submit' color='primary' variant="contained">
+                            Update
+                          </Button>
+                        </div>
+                      </form>
+                    </Paper>
                   </div>
-                </Paper>
+                }
               </Grid>
+              {!data && !data.length &&
+                <Grid item xs={8}>
+                  <Paper className={classes.paper}>
+                    <div>
+                      <div className={classes.box}>
+                        <Typography color='secondary' gutterBottom>
+                          Welcome to Ahorta
+                        </Typography>
+                        <Typography variant="body1" gutterBottom>
+                          This is an example of a full-width box
+                        </Typography>
+                      </div>
+                      <div className={classes.alignRight}>
+                        <Button color='primary' variant="contained" className={classes.actionButtom}>
+                          Learn more
+                        </Button>
+                      </div>
+                    </div>
+                  </Paper>
+                </Grid>
               }
             </Grid>
           </Grid>
@@ -223,4 +245,4 @@ class Profile extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(Profile));
+export default withRouter(withStyles(styles)(DeviceEdit));

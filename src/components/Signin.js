@@ -11,8 +11,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Back from './common/Back';
 import CustomizedSnackbars from './common/CustomizedSnackbars'
-import Auth from '../modules/Auth'
-
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -152,6 +150,7 @@ class Signin extends Component {
       const token = result.data.token
       if(token) {
         this.props.history.push(`/token/${result.data.token}`)
+        this.props.openNotification('You were signed to your account successfully', 'success')
       } else {
         return this.props.openNotification('We couldnt log you in, please try again later', 'error')
       }

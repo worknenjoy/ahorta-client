@@ -4,11 +4,12 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   primary: {
-    marginRight: theme.spacing.unit * 2
+    marginRight: theme.spacing.unit * 2,
+    display: 'inline-block'
   },
   secondary: {
-    background: theme.palette.secondary['100'],
-    color: 'white'
+    display: 'inline-block',
+    marginLeft: theme.spacing.unit * 2
   },
   spaceTop: {
     marginTop: 20
@@ -20,10 +21,20 @@ class ButtonBar extends Component {
   
 
   render() {
-    const { classes, onAction } = this.props;
+    const { classes, onAction, onEdit } = this.props;
 
     return (
       <div className={classes.spaceTop}>
+        {this.props.onEdit && 
+          <Button
+            onClick={onEdit}
+            variant="outlined"
+            color="primary"
+            className={classes.secondary}
+          >
+          Edit
+        </Button>
+        }
         <Button
           onClick={onAction}
           variant="contained"

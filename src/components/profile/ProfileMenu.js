@@ -31,6 +31,16 @@ export default function ProfileMenu(props) {
     props.history.push({ pathname: '/' })
   }
 
+  const toDevice = (event) => {
+    event.preventDefault()
+    props.history.push('/profile')
+  }
+
+  const toAccount = (event) => {
+    event.preventDefault()
+    props.history.push('/account')
+  }
+
   return (
     <div className={classes.root}>
       <List component="nav" aria-label="main mailbox folders">
@@ -43,18 +53,18 @@ export default function ProfileMenu(props) {
             <ListItemText primary={props.user && props.user.name} secondary={props.user && props.user.email} />
         </ListItem>
         <Divider />
-        <ListItem button>
+        <ListItemLink onClick={toDevice} button selected={props.history.location.pathname === '/profile'}>
           <ListItemIcon>
             <DeviceHubIcon />
           </ListItemIcon>
           <ListItemText primary="Devices" />
-        </ListItem>
-        <ListItem button>
+        </ListItemLink>
+        <ListItemLink onClick={toAccount} button selected={props.history.location.pathname === '/account'}>
           <ListItemIcon>
             <AccountBoxIcon />
           </ListItemIcon>
           <ListItemText primary="Account" />
-        </ListItem>
+        </ListItemLink>
         <Divider />
         <List component="nav" aria-label="secondary mailbox folders">
             <ListItemLink onClick={() => logout()}>
