@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import InstructionDialog from './dialogs/InstructionDialog';
 import SwipeDialog from './dialogs/SwipeDialog';
+import MailchimpSubscribe from "react-mailchimp-subscribe"
 
 import CustomizedSnackbars from './common/CustomizedSnackbars';
 import SectionHeader from './typo/SectionHeader';
@@ -59,7 +60,7 @@ const styles = theme => ({
   actionButtom: {
     textTransform: 'uppercase',
     margin: theme.spacing.unit,
-    width: 152
+    width: 200
   },
   blockCenter: {
     padding: theme.spacing.unit * 2,
@@ -96,12 +97,68 @@ const styles = theme => ({
   }
 });
 
+const url = '//truppie.us17.list-manage.com/subscribe/post?u=bb76ecd5ef5cbbc5e60701321&amp;id=7582e094e3'
+
+// a basic form
+const CustomForm = ({ status, message, onValidated, data }) => {
+  let email, name;
+  const submit = () =>
+    email &&
+    name &&
+    email.value.indexOf("@") > -1 &&
+    onValidated({
+      EMAIL: email.value,
+      NAME: name.value
+    });
+
+  return (
+    <div
+      style={{
+        borderRadius: 2,
+        padding: 10,
+        display: "inline-block"
+      }}
+    >
+      {status === "sending" && <div style={{ color: "blue" }}>sending...</div>}
+      {status === "error" && (
+        <div
+          style={{ color: "red" }}
+          dangerouslySetInnerHTML={{ __html: message }}
+        />
+      )}
+      {status === "success" && (
+        <div
+          style={{ color: "green" }}
+          dangerouslySetInnerHTML={{ __html: message }}
+        />
+      )}
+      <input
+        style={{ fontSize: "2em", padding: 5 }}
+        ref={node => (name = node)}
+        type="hidden"
+        value={data.name}
+      />
+      <br />
+      <input
+        style={{ fontSize: "2em", padding: 5 }}
+        ref={node => (email = node)}
+        type="hidden"
+        value={data.email}
+      />
+      <Button color='primary' variant="contained" onClick={submit}>
+          Join the waiting list
+      </Button>
+    </div>
+  );
+};
+
 class Profile extends Component {
 
   state = {
     learnMoredialog: false,
     getStartedDialog: false,
-    data: []
+    data: [],
+    user: {}
   };
 
   async componentDidMount() {
@@ -117,7 +174,7 @@ class Profile extends Component {
     )
     this.setState({data: devices.data})
     const myDevices = devices.data.filter( d => d.UserId === user.data.id)
-    this.setState({data: myDevices})
+    this.setState({data: myDevices, user: user.data})
   }
 
   openDialog = (event) => {
@@ -151,9 +208,8 @@ class Profile extends Component {
 
   render() {
     const { classes, history, logged, loggedUser  } = this.props;
-    const { data } = this.state
+    const { data, user } = this.state
     const currentPath = this.props.location.pathname
-    console.log('history', history)
 
     return (
       <React.Fragment>
@@ -165,9 +221,10 @@ class Profile extends Component {
               <Grid item xs={3}>
                 <ProfileMenu history={history} onLogout={this.logout} logged={logged} history={history} user={loggedUser && loggedUser.data.user} />
               </Grid>
+              { data && data.length ? ( 
               <Grid item xs={9}>
                 <SectionHeader title="Devices" subtitle="Ahorta devices created" />
-                {data && data.map(r =>  {
+                {data.map(r =>  {
                     return r.deviceId && 
                       <div style={{marginTop: 20}}>
                         <DeviceItem 
@@ -182,27 +239,37 @@ class Profile extends Component {
                       </div>
                   })}
               </Grid>
-              {!data && !data.length && 
-              <Grid item xs={8}>
-                <Paper className={classes.paper}>
-                  <div>
-                    <div className={classes.box}>
-                      <Typography color='secondary' gutterBottom>
-                        Welcome to Ahorta
+              ) : (
+              <Grid item xs={9}>
+                <form method='post'>
+                  <Paper className={classes.paper}>
+                    <div>
+                      <div className={classes.box}>
+                        <Typography color='secondary' gutterBottom>
+                          You don't have any registered device yet  
                         </Typography>
-                      <Typography variant="body1" gutterBottom>
-                        This is an example of a full-width box
+                        <Typography variant="body1" gutterBottom>
+                          You don't have any device registered yet. We are building devices to test and you can join our waiting list to have one device send to you or build your own
                         </Typography>
+                      </div>
+                      <div className={classes.alignRight}>
+                      <MailchimpSubscribe
+                        url={url}
+                        render={({ subscribe, status, message }) => (
+                          <CustomForm
+                            status={status}
+                            message={message}
+                            onValidated={formData => subscribe(formData)}
+                            data={{email: user.email, name: user.name}}
+                          />
+                        )}
+                      />
+                      </div>
                     </div>
-                    <div className={classes.alignRight}>
-                      <Button color='primary' variant="contained" className={classes.actionButtom}>
-                        Learn more
-                      </Button>
-                    </div>
-                  </div>
-                </Paper>
+                  </Paper>
+                </form>
               </Grid>
-              }
+              )}
             </Grid>
           </Grid>
           <SwipeDialog

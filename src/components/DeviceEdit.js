@@ -113,9 +113,7 @@ class DeviceEdit extends Component {
         }
       }
     )
-    console.log(myDevice)
     this.setState({ data: myDevice.data, name: myDevice.data.name })
-    console.log(myDevice)
   }
 
   openDialog = (event) => {

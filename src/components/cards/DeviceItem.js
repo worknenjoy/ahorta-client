@@ -81,7 +81,7 @@ const styles = theme => ({
 class DeviceItem extends Component {
 
   componentDidMount() {
-    console.log(this.props.user)
+    //console.log(this.props.user)
   }
 
   render() {

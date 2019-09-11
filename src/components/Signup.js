@@ -143,14 +143,13 @@ class Signup extends Component {
       website: this.state.website
     }).then(result => {
       this.setState({loading: false})
+      if(result.error && result.error.response && result.error.response.data && result.error.response.data.error) return this.props.openNotification(result.error.response.data.error, 'error')
       if(result.error) return this.props.openNotification(result.error.message, 'error')
       this.props.openNotification('You were successfully registered, now you can signin with your credentials', 'success')
       this.props.history.push(`/signin`)
-      console.log('register result', result)
     }).catch(e => {
-      console.log('error', e)
       this.setState({loading: false})
-      return this.props.openNotification(e.message, 'error')
+      return this.props.openNotification(e.error || e.message, 'error')
     })
 
   }

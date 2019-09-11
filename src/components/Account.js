@@ -120,8 +120,6 @@ class Account extends Component {
       confirmPassword: user.data.user.confirmPassword,
       website: user.data.user.website
     })
-    console.log(this.state)
-    
   }
 
   openDialog = (event) => {
