@@ -26,6 +26,7 @@ import Topbar from './Topbar';
 import SensorChart from './SensorChart'
 
 import { Percent as percent } from '../modules/Percent'
+import { host } from '../url'
 
 const numeral = require('numeral');
 numeral.defaultFormat('0');
@@ -142,7 +143,7 @@ class Dashboard extends Component {
   async componentDidMount() {
     await this.props.logged()
     const dashboardId = this.props.match.params.id
-    const response = await axios.get(`/devices/${dashboardId}`,
+    const response = await axios.get(host + `/devices/${dashboardId}`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
@@ -166,7 +167,7 @@ class Dashboard extends Component {
   handleChangeAmount = (event, value) => {
     this.setState({amount: value, loading: false});
     const dashboardId = this.props.match.params.id
-    axios.put(`/devices/${dashboardId}`,
+    axios.put(`${host}/devices/${dashboardId}`,
       {
         timer: value * 3600000
       },
@@ -194,7 +195,7 @@ class Dashboard extends Component {
   handleChangeStart = (event, value) => {
     this.setState({start: value, loading: false});
     const dashboardId = this.props.match.params.id
-    axios.put(`/devices/${dashboardId}`,
+    axios.put(`${host}/devices/${dashboardId}`,
       {
         threshold: value || 0
       },

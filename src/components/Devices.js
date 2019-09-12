@@ -9,6 +9,7 @@ import Topbar from './Topbar';
 
 import './mailchimp.css'
 import { Percent as percent } from '../modules/Percent'
+import { host } from '../url'
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -42,7 +43,7 @@ class Devices extends Component {
 
   async componentDidMount() {
     await this.props.logged()
-    const devices = await axios.get(`/devices`,
+    const devices = await axios.get(`${host}/devices`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,

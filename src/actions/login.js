@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { genPlainActions, genActionNames } from 'react-redux-gen'
+import { host } from '../url'
 
 import Auth from '../modules/Auth'
 
@@ -15,7 +16,7 @@ const logged = () => {
   return dispatch => {
     dispatch(loginActions.logged[0]())
     return axios
-      .get('/authenticated', { headers: {
+      .get(host + '/authenticated', { headers: {
         'Authorization': `Bearer ${Auth.getToken()}`,
         'Content-Type': 'application/json'
       }
@@ -32,7 +33,7 @@ const login = (user) => {
   return dispatch => {
     dispatch(loginActions.login[0]())
     return axios
-      .post('/authorize/local', user)
+      .post(host + '/authorize/local', user)
       .then( response => {
         return dispatch(loginActions.login[1](response.data))
       }).catch( e => {
@@ -55,7 +56,7 @@ const register = (user) => {
   return dispatch => {
     dispatch(loginActions.register[0]())
     return axios
-      .post('/auth/register', user)
+      .post(host + '/auth/register', user)
       .then( response => {
         return dispatch(loginActions.register[1](response.data))
       }).catch( e => {

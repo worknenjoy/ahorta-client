@@ -17,6 +17,7 @@ import { Percent as percent } from '../modules/Percent'
 import ProfileMenu from './profile/ProfileMenu'
 import Topbar from './Topbar';
 import DeviceItem from './cards/DeviceItem';
+import { host } from '../url'
 
 const backgroundShape = require('../images/shape.svg');
 
@@ -164,7 +165,7 @@ class Profile extends Component {
   async componentDidMount() {
     const logged = await this.props.logged()
     const user = await this.props.fetchUser(logged.data.user.id)
-    const devices = await axios.get(`/devices`,
+    const devices = await axios.get(`${host}/devices`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,

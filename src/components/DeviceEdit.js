@@ -15,6 +15,7 @@ import CustomizedSnackbars from './common/CustomizedSnackbars';
 import SectionHeader from './typo/SectionHeader'
 import ProfileMenu from './profile/ProfileMenu'
 import Topbar from './Topbar';
+import { host } from '../url'
 
 const backgroundShape = require('../images/shape.svg')
 
@@ -105,7 +106,7 @@ class DeviceEdit extends Component {
   async componentDidMount() {
     await this.props.logged()
     const deviceId = this.props.match.params.id
-    const myDevice = await axios.get(`/devices/${deviceId}`,
+    const myDevice = await axios.get(`${host}/devices/${deviceId}`,
       {
         headers: {
           'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
@@ -139,7 +140,7 @@ class DeviceEdit extends Component {
   onSubmit = event => {
     event.preventDefault()
     const deviceId = this.props.match.params.id
-    axios.put(`/devices/${deviceId}`, 
+    axios.put(`${host}/devices/${deviceId}`, 
       {
         name: this.state.name
       },
