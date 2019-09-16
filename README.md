@@ -1,12 +1,13 @@
 # Ahorta Client
-A dashboard which connects with Ahorta plants: https://github.com/worknenjoy/ahorta
+[https://ahorta.io](https://ahorta.io)
 
-## Features
-- Responsive
-- Include a Graph using [recharts](https://github.com/recharts/recharts)
-- With [Router](https://github.com/ReactTraining/react-router) included
-- A docker container for production build
-- Created with [Create react app](https://github.com/facebook/create-react-app)
+![Ahorta](ahorta-logo-medium.png)
+
+A dashboard which connects with Ahorta plants from our API.
+
+The API and back-end: https://github.com/worknenjoy/ahorta
+
+### Screenshots
 
 ![Dashboard](screenshot-dashboard.png)
 
