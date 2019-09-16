@@ -1,5 +1,7 @@
 # Ahorta Client
-A dashboard which connects with Ahorta plants: https://github.com/worknenjoy/ahorta
+A dashboard which connects with Ahorta plants from our API.
+
+The API and back-end: https://github.com/worknenjoy/ahorta
 
 ## Features
 - Responsive
