@@ -1,4 +1,5 @@
 import React,  { Component } from 'react';
+import axios from 'axios'
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,7 +17,10 @@ import {
   green
 } from '@material-ui/core/colors'
 
-import CustomizedSnackbars from './common/CustomizedSnackbars'
+import { Percent as percent } from '../modules/Percent'
+import { host } from '../url'
+import DeviceItem from './cards/DeviceItem';
+import CustomizedSnackbars from './common/CustomizedSnackbars';
 
 import Topbar from './Topbar';
 
@@ -132,11 +136,24 @@ class Main extends Component {
 
   state = {
     learnMoredialog: false,
-    getStartedDialog: false
+    getStartedDialog: false,
+    data: []
   };
 
   async componentDidMount() {
     await this.props.logged()
+    const devices = await axios.get(`${host}/devices`,
+      {
+        headers: {
+          'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    this.setState({data: devices.data})
+    //const newUser = await this.props.createUser({email: 'alz@worknenjoy.com', password: 'demo'})
+    //const user = await this.props.fetchUser(7)
+    //const updateUser = await this.props.updateUser(7, {name: 'Alexandre Magno'})
   }
 
   openDialog = (event) => {
@@ -155,7 +172,12 @@ class Main extends Component {
     this.setState({getStartedDialog: false});
   }
 
+  onAction = (id) => {
+    this.props.history.push(`/dashboard/${id}`)
+  }
+
   render() {
+    const { data } = this.state
     const { classes, loggedUser, history } = this.props;
     const currentPath = this.props.location.pathname
     return (
@@ -194,6 +216,15 @@ class Main extends Component {
                       </div>
                     </Paper>
                 </Grid>
+                <Grid item xs={12}>
+                    <SectionHeader title="Devices" subtitle="Last Ahorta devices created" />
+                      {data.map(r =>  {
+                          return r.deviceId && 
+                            <div style={{marginTop: 20}}>
+                              <DeviceItem user={r.User} at={r.Readings[0] && r.Readings[0].createdAt} lastReading={percent(r.Readings[0] && r.Readings[0].value) || 0} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
+                            </div>
+                        })}
+                  </Grid>
               </Grid>
               <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
                 <Grid item xs={12} md={4}>
