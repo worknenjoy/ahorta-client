@@ -1,7 +1,7 @@
 # Ahorta Client
 [https://ahorta.io](https://ahorta.io)
 
-[http://ahorta.io/static/media/ahorta-logo.c6bd6688.png](http://ahorta.io/static/media/ahorta-logo.c6bd6688.png)
+![http://ahorta.io/static/media/ahorta-logo.c6bd6688.png](http://ahorta.io/static/media/ahorta-logo.c6bd6688.png)
 
 A dashboard which connects with Ahorta plants from our API.
 
