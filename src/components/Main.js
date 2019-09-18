@@ -76,8 +76,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
   },
   box: {
-    marginBottom: 40,
-    height: 65
+    marginBottom: 40
   },
   inlining: {
     display: 'inline-block',
