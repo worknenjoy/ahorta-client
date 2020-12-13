@@ -25,7 +25,6 @@ import ImageCard from './cards/ImageCard'
 import Topbar from './Topbar';
 import SensorChart from './SensorChart'
 
-import { Percent as percent } from '../modules/Percent'
 import { host } from '../url'
 
 const numeral = require('numeral');
@@ -286,7 +285,7 @@ class Dashboard extends Component {
                     <div>
                       <SimpleLineChart threshold={device && device.threshold} data={device && device.Readings && device.Readings.map(r => (
                         {
-                          value: percent(r.value) || 0,
+                          value: r.value || 0,
                           createdAt: moment(r.createdAt).calendar()
                         }
                       ))} />
@@ -304,9 +303,9 @@ class Dashboard extends Component {
                   This is the humidity from the sensor <br /> {device && device.Readings && device.Readings[0] && moment(device.Readings[0].createdAt).calendar()}
                 </Typography>
                 <div>
-                  <SensorChart threshold={start} value={device && device.Readings && device.Readings[0] && percent(device.Readings && device.Readings[0].value)} data={[
-                    { name: device && device.Readings && device.Readings[0] && `${percent(device.Readings[0].value)} %`, value: device && device.Readings && device.Readings[0] && percent(device.Readings && device.Readings[0].value) },
-                    { name: 'Group B', value: device && device.Readings && device.Readings[0] && device.Readings && percent(device.Readings[0].value) === 0 ? 100 : device && device.Readings && device.Readings[0] && percent(device.Readings && device.Readings[0].value) * 18}
+                  <SensorChart threshold={start} value={device && device.Readings && device.Readings[0] && device.Readings && device.Readings[0].value} data={[
+                    { name: device && device.Readings && device.Readings[0] && `${device.Readings[0].value}`, value: device && device.Readings && device.Readings[0] && device.Readings && device.Readings[0].value },
+                    { name: 'Group B', value: device && device.Readings && device.Readings[0] && device.Readings && device.Readings[0].value}
                   ]} />
                 </div>
               </Paper>

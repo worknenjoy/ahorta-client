@@ -13,7 +13,6 @@ import MailchimpSubscribe from "react-mailchimp-subscribe"
 
 import CustomizedSnackbars from './common/CustomizedSnackbars';
 import SectionHeader from './typo/SectionHeader';
-import { Percent as percent } from '../modules/Percent'
 import ProfileMenu from './profile/ProfileMenu'
 import Topbar from './Topbar';
 import DeviceItem from './cards/DeviceItem';
@@ -231,7 +230,7 @@ class Profile extends Component {
                         <DeviceItem 
                           user={r.User} 
                           at={r.Readings[0] && r.Readings[0].createdAt}
-                          lastReading={percent(r.Readings[0] && r.Readings[0].value) || 0}
+                          lastReading={r.Readings[0] && r.Readings[0].value}
                           threshold={r.threshold} ssid={r.ssid}
                           deviceId={r.deviceId} name={r.name}
                           onAction={() => this.onAction(r.id)} 
