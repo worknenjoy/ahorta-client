@@ -8,6 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import MenuIcon from '@material-ui/icons/Menu';
+import GithubIcon from '@material-ui/icons/GitHub'
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,7 +19,7 @@ import Avatar from '@material-ui/core/Avatar';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import { Link as MaterialLink } from '@material-ui/core'
-import Menu from './Menu';
+import { MainMenu, SecondaryMenu} from './Menu';
 
 const logo = require('../images/ahorta-logo.png');
 
@@ -76,6 +77,9 @@ const styles = theme => ({
   },
   tabContainer: {
     marginLeft: 32,
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
       display: 'none'
     }
@@ -94,11 +98,16 @@ function ListItemLink(props) {
 class Topbar extends Component {
 
   state = {
-    value: null,
+    valuePrimary: null,
+    valueSecondary: null,
     menuDrawer: false
   };
 
-  handleChange = (event, value) => {
+  handleChangePrimary = (event, value) => {
+    this.setState({ value });
+  };
+
+  handleChangeSecondary = (event, value) => {
     this.setState({ value });
   };
 
@@ -118,7 +127,7 @@ class Topbar extends Component {
     this.props.history.push({ pathname: '/profile' })
   }
 
-  current = () => {
+  currentPrimary = () => {
     if(this.props.currentPath === '/') {
       return 0
     } 
@@ -135,6 +144,19 @@ class Topbar extends Component {
       return 4
     } 
   }
+
+  currentSecondary = () => {
+    if(this.props.currentPath === '/') {
+      return 0
+    } 
+    if(this.props.currentPath === '/signup') {
+      return 1
+    } 
+    if(this.props.currentPath === '/signin') {
+      return 2
+    } 
+  }
+  
 
   render() {
 
@@ -168,7 +190,15 @@ class Topbar extends Component {
                         <SwipeableDrawer anchor="right" open={this.state.menuDrawer} onClose={this.mobileMenuClose} onOpen={this.mobileMenuOpen}>
                           <AppBar title="Menu" />
                           <List>
-                            {Menu.map((item, index) => (
+                            {MainMenu.map((item, index) => (
+                              <ListItem component={item.external ? MaterialLink : Link} href={item.external ? item.pathname : null} to={item.external ? null : {pathname: item.pathname, search: this.props.location.search}} button key={item.label}>
+                                <ListItemText primary={item.label} />
+                              </ListItem>
+                            ))}
+                            <Divider />
+                          </List>
+                          <List>
+                            {SecondaryMenu.map((item, index) => (
                               <ListItem component={item.external ? MaterialLink : Link} href={item.external ? item.pathname : null} to={item.external ? null : {pathname: item.pathname, search: this.props.location.search}} button key={item.label}>
                                 <ListItemText primary={item.label} />
                               </ListItem>
@@ -177,13 +207,23 @@ class Topbar extends Component {
                           </List>
                         </SwipeableDrawer>
                         <Tabs
-                          value={this.current() || this.state.value}
+                          value={this.currentPrimary() || this.state.valuePrimary}
                           indicatorColor="primary"
                           textColor="primary"
-                          onChange={this.handleChange}
+                          onChange={this.handleChangePrimary}
                         >
-                          {Menu.map((item, index) => (
-                            <Tab key={index} component={item.external ? MaterialLink : Link} href={item.external ? item.pathname : null} to={item.external ? null : {pathname: item.pathname, search: this.props.location.search}} classes={{root: classes.tabItem}} label={item.label} />
+                          {MainMenu.map((item, index) => (
+                            <Tab key={`primary-${index}`} component={item.external ? MaterialLink : Link} href={item.external ? item.pathname : null} to={item.external ? null : {pathname: item.pathname, search: this.props.location.search}} classes={{root: classes.tabItem}} label={item.label} />
+                          ))}
+                        </Tabs>
+                        <Tabs
+                          value={this.currentSecondary() || this.state.valueSecondary}
+                          indicatorColor="primary"
+                          textColor="primary"
+                          onChange={this.handleChangeSecondary}
+                        >
+                          {SecondaryMenu.map((item, index) => (
+                            <Tab iconContainer key={`secondary-${index}`} component={item.external ? MaterialLink : Link} href={item.external ? item.pathname : null} to={item.external ? null : {pathname: item.pathname, search: this.props.location.search}} classes={{root: classes.tabItem}} label={<div>{item.label} { item.icon === 'github' && <GithubIcon style={{marginLeft: 5, verticalAlign: 'sub'}} />}</div>} />
                           ))}
                         </Tabs>
                       </div>

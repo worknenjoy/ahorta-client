@@ -188,7 +188,7 @@ class Signin extends Component {
                         <Paper className={classes.paper}>
                           <Grid spacing={24} alignItems="flex-start" justify="center" container className={classes.grid}>
                             <Grid xs={6}>
-                              <img src={publicImage} width={500} alt="" />
+                              <img src={publicImage} width={360} alt="" />
                             </Grid>
                             <Grid xs={6}>
                               <div class={classes.rootGrid}>

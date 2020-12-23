@@ -8,8 +8,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
-import Slider from '@material-ui/lab/Slider';
-import Button from '@material-ui/core/Button';
+import Slider from '@material-ui/core/Slider';
 import Avatar from '@material-ui/core/Avatar';
 import SimpleLineChart from './SimpleLineChart';
 import Loading from './common/Loading';
@@ -239,9 +238,6 @@ class Dashboard extends Component {
                     <Typography variant="body1">
                       Device ID: <strong>{ device && device.deviceId }</strong>
                     </Typography>
-                    <Button onClick={this.openDialog} variant="outlined" className={classes.outlinedButtom}>
-                      How it works?
-                    </Button>
                   </div>
                   <div>
                     <Typography variant="body1">

@@ -5,13 +5,11 @@ import { withRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import InstructionDialog from './dialogs/InstructionDialog';
+import Grid from '@material-ui/core/Grid';
 import SwipeDialog from './dialogs/SwipeDialog';
 import SectionHeader from './typo/SectionHeader';
 import SubscribeFrom from 'react-mailchimp-subscribe'
-import ImageCard from './cards/ImageCard'
 import {
   red,
   green
@@ -21,9 +19,11 @@ import { host } from '../url'
 import DeviceItem from './cards/DeviceItem';
 import CustomizedSnackbars from './common/CustomizedSnackbars';
 
+import InstructionDialog from './dialogs/InstructionDialog';
 import Topbar from './Topbar';
 
 const backgroundShape = require('../images/shape.svg');
+const mainImage = require('../images/ahorta-experiments-01.jpeg')
 
 const styles = theme => ({
   root: {
@@ -44,8 +44,7 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing.unit * 3,
-    textAlign: 'left',
-    color: theme.palette.text.secondary,
+    textAlign: 'left'
   },
   rangeLabel: {
     display: 'flex',
@@ -187,35 +186,30 @@ class Main extends Component {
             <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
               <Grid container item xs={12}>
                   <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                      <div>
+                    <Paper color='outlined' className={classes.paper} elevation color='primary'>
+                      <div style={{ display: 'flex', alignItem: 'flex-start'}}>
                         <div className={classes.box}>
-                          <Typography color='secondary' gutterBottom>
+                          <Typography color='primary' variant='h4' gutterBottom>
                             Welcome to Ahorta
                           </Typography>
-                          <Typography variant="body1" gutterBottom>
-                            Ahorta is a simple IOT device that connect to your wifi and read the humidity values of your plant and notify you, so you can have a better way to know the needs of your plants and the best way to provide water, no more, no less
+                          <Typography variant="h5" gutterBottom>
+                            Ahorta is a prototype of an IOT device built with Arduino to automate your home gardening
                           </Typography>
-                          <Typography variant="body2" gutterBottom>
-                            We still under tests and looking for our first users to get yours at home and to make part of the community
-                          </Typography>
+                          <div>
+                            <Button onClick={this.openDialog} color='primary' size='small' variant="outlined" className={classes.actionButtom}>
+                              How it works?
+                            </Button>
+                            <Button onClick={() => history.push('/signup')} color='primary' size='small' variant="outlined" className={classes.actionButtom}>
+                              Create an account
+                            </Button>
+                          </div>
                         </div>
-                        <div className={classes.alignRight}>
-                          <Button onClick={() => history.push('/devices')} color='secondary' variant="outlined" className={classes.actionButtom}>
-                            See our devices
-                          </Button>
-                          <Button onClick={() => history.push('/signin')} color='primary' variant="contained" className={classes.actionButtom}>
-                            Signin to your account
-                          </Button>
-                          <Button onClick={() => history.push('/signup')} color='primary' variant="contained" className={classes.actionButtom}>
-                            Create an account
-                          </Button>
-                        </div>
+                        <img width='400' src={mainImage} />
                       </div>
                     </Paper>
                 </Grid>
                 <Grid item xs={12}>
-                    <SectionHeader title="Devices" subtitle="Last Ahorta devices created" />
+                    <SectionHeader title="Last devices added to our platform" subtitle="This is our devices already created using Ahorta" />
                       {data.map(r =>  {
                           return r.deviceId && 
                             <div style={{marginTop: 20}}>
@@ -223,29 +217,6 @@ class Main extends Component {
                             </div>
                         })}
                   </Grid>
-              </Grid>
-              <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
-                <Grid item xs={12} md={4}>
-                  <ImageCard 
-                    image={require('../images/samples/IMG_3061.jpg')} 
-                    title='A prototype for your plant'
-                    description='We are developing our first version of a new device that will help you to take care of your plant'
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <ImageCard 
-                    image={require('../images/samples/IMG_3143.jpg')} 
-                    title='Monitoring your home garden'
-                    description='Explore and discover by anaylising the humidity of your plants'
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <ImageCard 
-                    image={require('../images/samples/IMG_4264.jpg')} 
-                    title='Always green'
-                    description='A plant can be complex, so know yours and keep it always green in your home'
-                  />
-                </Grid>
               </Grid>
               <Grid item xs={12}>
                 <SectionHeader title="I want to know more about" subtitle="Subscribe to stay updated for our first release" />
