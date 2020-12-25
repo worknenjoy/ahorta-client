@@ -35,6 +35,7 @@ class ButtonBar extends Component {
           Edit
         </Button>
         }
+        { !this.props.noDashboard &&
         <Button
           onClick={onAction}
           variant="contained"
@@ -43,6 +44,7 @@ class ButtonBar extends Component {
         >
           View Dashboard
         </Button>
+        }
       </div>
     )
   }

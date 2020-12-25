@@ -146,7 +146,7 @@ class DeviceItem extends Component {
               <Typography variant="h4" gutterBottom>
                 {name}
               </Typography>
-              <ButtonBar onAction={onAction} onEdit={onEdit} />
+              <ButtonBar noDashboard={this.props.noDashboard} onAction={onAction} onEdit={onEdit} />
             </div>
           </div>
         </Paper>

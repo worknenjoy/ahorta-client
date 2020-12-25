@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
+import WifiIcon from '@material-ui/icons/Wifi';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import DeviceHubIcon from '@material-ui/icons/Devices';
 
@@ -25,12 +26,11 @@ function ListItemLink(props) {
 export default function ProfileMenu(props) {
   const classes = useStyles();
 
-  const logout = async () => {
-    await props.onLogout()
-    props.logged && await props.logged()
-    props.history.push({ pathname: '/' })
+  const toConnectDevice = (event) => {
+    event.preventDefault()
+    props.history.push('/connect')
   }
-
+  
   const toDevice = (event) => {
     event.preventDefault()
     props.history.push('/profile')
@@ -39,6 +39,12 @@ export default function ProfileMenu(props) {
   const toAccount = (event) => {
     event.preventDefault()
     props.history.push('/account')
+  }
+
+  const logout = async () => {
+    await props.onLogout()
+    props.logged && await props.logged()
+    props.history.push({ pathname: '/' })
   }
 
   return (
@@ -53,6 +59,12 @@ export default function ProfileMenu(props) {
             <ListItemText primary={props.user && props.user.name} secondary={props.user && props.user.email} />
         </ListItem>
         <Divider />
+        <ListItemLink onClick={toConnectDevice} button selected={props.history.location.pathname === '/connect'}>
+          <ListItemIcon>
+            <WifiIcon />
+          </ListItemIcon>
+          <ListItemText primary="Connect device" />
+        </ListItemLink>
         <ListItemLink onClick={toDevice} button selected={props.history.location.pathname === '/profile'}>
           <ListItemIcon>
             <DeviceHubIcon />

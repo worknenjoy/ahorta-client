@@ -223,7 +223,7 @@ class Profile extends Component {
               </Grid>
               { data && data.length ? ( 
               <Grid item xs={9}>
-                <SectionHeader title="Devices" subtitle="Ahorta devices created" />
+                <SectionHeader title="Devices" subtitle="Your Ahorta devices connected" />
                 {data.map(r =>  {
                     return r.deviceId && 
                       <div style={{marginTop: 20}}>

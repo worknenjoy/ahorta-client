@@ -12,6 +12,7 @@ import Wizard from './components/Wizard'
 import Profile from './containers/profile'
 import DeviceEdit from './containers/device-edit'
 import Account from './containers/account'
+import Connect from './containers/connect'
 import ScrollToTop from './components/ScrollTop'
 
 export default props => (
@@ -20,6 +21,7 @@ export default props => (
         <Switch>
           <PrivateRoute path='/profile' component={ Profile } />
           <PrivateRoute path='/account' component={ Account } />
+          <PrivateRoute path='/connect' component={ Connect } />
           <Route exact path='/token/:token' component={ Session } />
           <Route exact path='/devices' component={ Devices } />
           <Route exact path='/users' component={ Users } />
