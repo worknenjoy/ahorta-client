@@ -236,9 +236,6 @@ class Dashboard extends Component {
                     <Typography variant="body1">
                       Created { device && moment(device.createdAt).fromNow() }
                     </Typography>
-                    <Typography variant="body1">
-                      Device ID: <strong>{ device && device.deviceId }</strong>
-                    </Typography>
                   </div>
                   <div>
                     <Typography variant="body1">
@@ -275,14 +272,14 @@ class Dashboard extends Component {
                           Value
                         </Typography>
                         <Typography className={classes.inlining} color='secondary' variant="h6" gutterBottom>
-                          %
+                          % 
                         </Typography>
                       </div>
                     </div>
                     <div>
                       <SimpleLineChart threshold={device && device.threshold} data={device && device.Readings && device.Readings.map(r => (
                         {
-                          value: Percent(r.value, device.minValue, device.maxValue) || 0,
+                          value: r.value,
                           createdAt: moment(r.createdAt).calendar()
                         }
                       ))} />
@@ -299,11 +296,10 @@ class Dashboard extends Component {
                 <Typography variant="body1">
                   This is the humidity from the sensor <br /> {device && device.Readings && device.Readings[0] && moment(device.Readings[0].createdAt).calendar()}
                 </Typography>
-                <div>
-                  <SensorChart threshold={start} value={device && device.Readings && device.Readings[0] && device.Readings && device.Readings[0].value} data={[
-                    { name: device && device.Readings && device.Readings[0] && `${Percent(device.Readings[0].value, device.minValue, device.maxValue)}`, value: device && device.Readings && device.Readings[0] && device.Readings && Percent(device.Readings[0].value, device.minValue, device.maxValue) },
-                    { name: 'Group B', value: device && device.Readings && device.Readings[0] && device.Readings && Percent(device.Readings[0].value, device.minValue, device.maxValue)}
-                  ]} />
+                <div style={{textAlign: 'center', marginTop: 20}}>
+                  <Typography variant='h4' color='secondary'>
+                   { device && device.Readings && device.Readings[0] && Percent(device.Readings[0].value, device.minValue, device.maxValue) } %
+                  </Typography>
                 </div>
               </Paper>
             </Grid>

@@ -1,6 +1,7 @@
 const Percent = (value, min, max) => {
-  if(!min && !max) return 0
-  return Math.round((value - min)*100/(max - min))
+  const diff = max - min
+  if(diff === 0) return 0
+  return ((value - min)*100/(max - min)).toFixed(2)
 }
 
 export default Percent;

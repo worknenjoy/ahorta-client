@@ -54,6 +54,7 @@ class Devices extends Component {
     //const newUser = await this.props.createUser({email: 'alz@worknenjoy.com', password: 'demo'})
     //const user = await this.props.fetchUser(7)
     //const updateUser = await this.props.updateUser(7, {name: 'Alexandre Magno'})
+    console.log('device data', devices.data)
   }
 
   onAction = (id) => {

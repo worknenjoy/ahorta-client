@@ -7,7 +7,7 @@ import Tooltip from 'recharts/lib/component/Tooltip';
 import { withTheme } from '@material-ui/styles';
 
 function SimpleLineChart(props) {
-  const { theme, data, threshold } = props;
+  const { theme, data } = props;
   return (
     <ResponsiveContainer width="99%" height={225}>
       <BarChart data={data && data.reverse()}>
