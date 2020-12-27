@@ -16,6 +16,7 @@ import SectionHeader from './typo/SectionHeader';
 import ProfileMenu from './profile/ProfileMenu'
 import Topbar from './Topbar';
 import DeviceItem from './cards/DeviceItem';
+import Percent from '../modules/Percent';
 import { host } from '../url'
 
 const backgroundShape = require('../images/shape.svg');
@@ -230,7 +231,7 @@ class Profile extends Component {
                         <DeviceItem 
                           user={r.User} 
                           at={r.Readings[0] && r.Readings[0].createdAt}
-                          lastReading={r.Readings[0] && r.Readings[0].value}
+                          lastReading={r.Readings[0] && Percent(r.Readings[0].value, r.minValue, r.maxValue)}
                           threshold={r.threshold} ssid={r.ssid}
                           deviceId={r.deviceId} name={r.name}
                           onAction={() => this.onAction(r.id)} 

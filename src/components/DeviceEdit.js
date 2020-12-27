@@ -100,6 +100,9 @@ class DeviceEdit extends Component {
 
   state = {
     name: '',
+    minValue: 0,
+    maxValue: 0,
+    threshold: 0,
     data: {}
   };
 
@@ -114,7 +117,13 @@ class DeviceEdit extends Component {
         }
       }
     )
-    this.setState({ data: myDevice.data, name: myDevice.data.name })
+    this.setState({ 
+      data: myDevice.data,
+      name: myDevice.data.name,
+      minValue: myDevice.data.minValue,
+      maxValue: myDevice.data.maxValue,
+      threshold: myDevice.data.threshold
+    })
   }
 
   openDialog = (event) => {
@@ -139,10 +148,14 @@ class DeviceEdit extends Component {
 
   onSubmit = event => {
     event.preventDefault()
+    const { name, minValue, maxValue, threshold } = this.state
     const deviceId = this.props.match.params.id
     axios.put(`${host}/devices/${deviceId}`, 
       {
-        name: this.state.name
+        name,
+        minValue,
+        maxValue,
+        threshold
       },
       {
         headers: {
@@ -156,6 +169,28 @@ class DeviceEdit extends Component {
       this.props.history.push(`/profile`)
     }).catch( e => {
       this.props.openNotification('There was an error to update your information, please try again later', 'error')
+    })
+  }
+
+  clearData(e) {
+    e.preventDefault()
+    const deviceId = this.props.match.params.id
+    axios.delete(`${host}/devices/${deviceId}/readings`, 
+    {
+      id: deviceId
+    },
+      {
+        headers: {
+          'Authorization': `Basic ${process.env.REACT_APP_SECRET}`,
+          'Content-Type': 'application/json'
+        } 
+      }
+    ).then(response => {
+      console.log('clear data response', response)
+      this.props.openNotification('Your data was successfully cleared', 'success')
+    }).catch( e => {
+      console.log('error', e)
+      this.props.openNotification('There was an error to clear the data, please try again later', 'error')
     })
   }
 
@@ -193,7 +228,40 @@ class DeviceEdit extends Component {
                           variant="outlined"
                           autoFocus
                         />
+                        <TextField
+                          id="minValue"
+                          name="minValue"
+                          label="The lowest number measured"
+                          value={this.state.minValue || ''}
+                          className={classes.textField}
+                          onChange={this.handleChange}
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          id="maxValue"
+                          name="maxValue"
+                          label="The maximum value measured"
+                          value={this.state.maxValue || ''}
+                          className={classes.textField}
+                          onChange={this.handleChange}
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <TextField
+                          id="threshold"
+                          name="threshold"
+                          label="The percentage that we will consider low humidity"
+                          value={this.state.threshold || ''}
+                          className={classes.textField}
+                          onChange={this.handleChange}
+                          margin="normal"
+                          variant="outlined"
+                        />
                         <div className={classes.alignRight}>
+                          <Button onClick={(e) => this.clearData(e)} style={{marginRight: 10}} color='primary' variant="outlined">
+                            Clear data from readings
+                          </Button>
                           <Button type='submit' color='primary' variant="contained">
                             Update
                           </Button>

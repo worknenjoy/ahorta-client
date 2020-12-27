@@ -25,6 +25,7 @@ import Topbar from './Topbar';
 import SensorChart from './SensorChart'
 
 import { host } from '../url'
+import Percent from '../modules/Percent'
 
 const numeral = require('numeral');
 numeral.defaultFormat('0');
@@ -281,7 +282,7 @@ class Dashboard extends Component {
                     <div>
                       <SimpleLineChart threshold={device && device.threshold} data={device && device.Readings && device.Readings.map(r => (
                         {
-                          value: r.value || 0,
+                          value: Percent(r.value, device.minValue, device.maxValue) || 0,
                           createdAt: moment(r.createdAt).calendar()
                         }
                       ))} />
@@ -300,153 +301,9 @@ class Dashboard extends Component {
                 </Typography>
                 <div>
                   <SensorChart threshold={start} value={device && device.Readings && device.Readings[0] && device.Readings && device.Readings[0].value} data={[
-                    { name: device && device.Readings && device.Readings[0] && `${device.Readings[0].value}`, value: device && device.Readings && device.Readings[0] && device.Readings && device.Readings[0].value },
-                    { name: 'Group B', value: device && device.Readings && device.Readings[0] && device.Readings && device.Readings[0].value}
+                    { name: device && device.Readings && device.Readings[0] && `${Percent(device.Readings[0].value, device.minValue, device.maxValue)}`, value: device && device.Readings && device.Readings[0] && device.Readings && Percent(device.Readings[0].value, device.minValue, device.maxValue) },
+                    { name: 'Group B', value: device && device.Readings && device.Readings[0] && device.Readings && Percent(device.Readings[0].value, device.minValue, device.maxValue)}
                   ]} />
-                </div>
-              </Paper>
-            </Grid>
-            <Grid item xs={12}>
-              <SectionHeader title="Picutres" subtitle="See how your plant it's looks like" />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <ImageCard 
-                image={require('../images/samples/IMG_0323.jpg')} 
-                title='We have flowers on our Basil!'
-                description='We were surprising by flowers on our first basil using Ahorta'
-              />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <ImageCard 
-                image={require('../images/samples/IMG_2473.jpg')} 
-                title='Our first food'
-                description='After the first leaves used in our delicious food'
-              />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <ImageCard 
-                image={require('../images/samples/IMG_4260.jpg')} 
-                title='Full again'
-                description='After some weeks we have the basil ready again'
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <SectionHeader title="Controls" subtitle="For the device owner" />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.paper}>
-                <div>
-                  <Typography variant="subtitle1" gutterBottom>
-                    How often the device will measure humidity
-                  </Typography>
-                  <Typography variant="body1">
-                    Use sliders to set the reading period <small>(requires restart)</small>
-                  </Typography>
-                  <div className={classes.blockCenter}>
-                    <Typography color='secondary' variant="h6" gutterBottom>
-                      from {numeral(amount).format()} to {numeral(amount).format()} hours
-                    </Typography>
-                  </div>
-                  <div>
-                    <Slider
-                      disabled
-                      value={amount}
-                      min={1}
-                      max={24}
-                      step={1}
-                      onChange={this.handleChangeAmount}
-                    />
-                  </div>
-                  <div className={classes.rangeLabel}>
-                    <div>
-                      <Typography variant="subtitle2">
-                        1 hour
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography variant="subtitle2">
-                        24 hours
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.paper}>
-                <div>
-                  <Typography variant="subtitle1" gutterBottom>
-                    How often you want to be notified
-                  </Typography>
-                  <Typography variant="body1">
-                    Set the periodicity to receive notifications
-                  </Typography>
-                  <div className={classes.blockCenter}>
-                    <Typography color='secondary' variant="h6" gutterBottom>
-                      {period} hours
-                    </Typography>
-                  </div>
-                  <div>
-                    <Slider
-                      disabled
-                      value={period}
-                      min={1}
-                      max={24}
-                      step={1}
-                      onChange={this.handleChangePeriod}
-                    />
-                  </div>
-                  <div className={classes.rangeLabel}>
-                    <div>
-                      <Typography variant="subtitle2">
-                        1 hour
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography variant="subtitle2">
-                        24 hours
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <Paper className={classes.paper}>
-                <div>
-                  <Typography variant="subtitle1" gutterBottom>
-                    Threshold
-                  </Typography>
-                  <Typography variant="body1">
-                    What's the target humidity for this plant?
-                  </Typography>
-                  <div className={classes.blockCenter}>
-                    <Typography color='secondary' variant="h6" gutterBottom>
-                      {start} %
-                    </Typography>
-                  </div>
-                  <div>
-                    <Slider
-                      disabled
-                      value={start}
-                      min={0}
-                      max={100}
-                      step={1}
-                      onChange={this.handleChangeStart}
-                    />
-                  </div>
-                  <div className={classes.rangeLabel}>
-                    <div>
-                      <Typography variant="subtitle2">
-                        0 %
-                      </Typography>
-                    </div>
-                    <div>
-                      <Typography variant="subtitle2">
-                        100 %
-                      </Typography>
-                    </div>
-                  </div>
                 </div>
               </Paper>
             </Grid>

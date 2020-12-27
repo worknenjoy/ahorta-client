@@ -92,16 +92,6 @@ class DeviceItem extends Component {
               </Avatar>
             </div>
             <div className={classes.baseline}>
-              {ssid && 
-                <div className={classes.inline}>
-                  <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
-                    Network name
-                  </Typography>
-                  <Typography variant="h6" gutterBottom>
-                    {ssid}
-                  </Typography>
-                </div>
-              }
               {user &&
                 <div className={classes.inline}>
                   <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
@@ -114,18 +104,10 @@ class DeviceItem extends Component {
               }
               <div className={classes.inline}>
                 <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
-                  Device ID
-                </Typography>
-                <Typography variant="h6" gutterBottom>
-                  {deviceId}
-                </Typography>
-              </div>
-              <div className={classes.inline}>
-                <Typography style={{ textTransform: 'uppercase' }} color='primary' gutterBottom>
                   Last humidity
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  <span style={{color: lastReading > threshold ? green['900'] : red['700']}}>{`${lastReading} %`}</span>
+                  <span style={{color: lastReading > threshold ? green['900'] : red['700']}}>{lastReading ? `${lastReading} %` : 'no readings'}</span>
                 </Typography>
               </div>
               { at && (
