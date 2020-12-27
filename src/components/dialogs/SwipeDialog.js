@@ -17,7 +17,7 @@ const tutorialSteps = [
     label: 'A NODE MCU with a sensor',
     description: 'We use a Node MCU Module with a Micropython firmware to send requests about the humidity state',
     imgPath:
-      'https://i0.wp.com/alexandremagno.net/wp-content/uploads/2018/12/Soil_Moisture_Interfacing_Diagram.png?resize=700%2C522&ssl=1',
+      'https://alexandremagno.net/wp-content/uploads/2020/12/Soil-Moisture-Sensor-ESP8266-NodeMCU_Steckplatine.png',
   },
   {
     label: 'We read the plant humidity',
