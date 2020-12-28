@@ -7,6 +7,7 @@ import SpaIcon from '@material-ui/icons/Spa';
 import ButtonBar from '../buttons/ButtonBar';
 import moment from 'moment';
 import { red, green } from '@material-ui/core/colors'
+import Percent from '../../modules/Percent'
 
 const styles = theme => ({
   paper: {
