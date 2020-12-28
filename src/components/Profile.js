@@ -231,7 +231,7 @@ class Profile extends Component {
                         <DeviceItem 
                           user={r.User} 
                           at={r.Readings[0] && r.Readings[0].createdAt}
-                          lastReading={r.Readings[0] && Percent(r.Readings[0].value, r.minValue, r.maxValue)}
+                          lastReading={r.Readings[0] && r.Readings[0].value}
                           minValue={r.minValue}
                           maxValue={r.maxValue}
                           threshold={r.threshold} ssid={r.ssid}
