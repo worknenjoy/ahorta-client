@@ -213,7 +213,7 @@ class Main extends Component {
                       {data.map(r =>  {
                           return r.deviceId && 
                             <div style={{marginTop: 20}}>
-                              <DeviceItem user={r.User} at={r.Readings[0] && r.Readings[0].createdAt} lastReading={r.Readings[0] && r.Readings[0].value} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
+                              <DeviceItem minValue={r.minValue} maxValue={r.maxValue} user={r.User} at={r.Readings[0] && r.Readings[0].createdAt} lastReading={r.Readings[0] && r.Readings[0].value} threshold={r.threshold} ssid={r.ssid} deviceId={r.deviceId} name={r.name} onAction={() => this.onAction(r.id)} />
                             </div>
                         })}
                   </Grid>

@@ -193,6 +193,8 @@ class Connect extends Component {
                             at={deviceFound.Readings[0] && deviceFound.Readings[0].createdAt}
                             lastReading={deviceFound.Readings[0] && deviceFound.Readings[0].value}
                             deviceId={deviceFound.deviceId} name={deviceFound.name}
+                            minValue={deviceFound.minValue}
+                            maxValue={deviceFound.maxValue}
                             noDashboard
                           />}
                           { deviceNotFound && 'device not found'}
