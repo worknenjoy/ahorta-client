@@ -82,6 +82,7 @@ class DeviceItem extends Component {
 
   render() {
     const { classes, user, ssid, deviceId, name, onAction, onEdit, lastReading, minValue, maxValue, threshold, at } = this.props;
+    const lastReadingPercent = Percent(lastReading, minValue, maxValue)
 
     return (
       <div className={classes.root}>
@@ -108,7 +109,7 @@ class DeviceItem extends Component {
                   Last humidity
                 </Typography>
                 <Typography variant="h6" gutterBottom>
-                  <span style={{color: lastReading > threshold ? green['900'] : red['700']}}>{lastReading && maxValue && minValue ? `${Percent(lastReading, minValue, maxValue)} %` : 'no readings'}</span>
+                  <span style={{color: parseInt(lastReadingPercent) > parseInt(threshold) ? green['900'] : red['700']}}>{lastReading && maxValue && minValue ? `${lastReadingPercent} %` : 'no readings'}</span>
                 </Typography>
               </div>
               { at && (
