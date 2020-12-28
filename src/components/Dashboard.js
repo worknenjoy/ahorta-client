@@ -269,10 +269,7 @@ class Dashboard extends Component {
                       <div className={classes.inlining}>
                         <Avatar className={classes.loanAvatar}></Avatar>
                         <Typography className={classes.inlining} variant="subtitle2" gutterBottom>
-                          Value
-                        </Typography>
-                        <Typography className={classes.inlining} color='secondary' variant="h6" gutterBottom>
-                          % 
+                          Original Value
                         </Typography>
                       </div>
                     </div>
