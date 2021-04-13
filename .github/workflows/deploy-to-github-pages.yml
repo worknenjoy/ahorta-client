@@ -26,4 +26,4 @@ jobs:
           REACT_APP_SECRET: ${{ secrets.REACT_APP_SECRET }}
           BASE_BRANCH: master
           BRANCH: gh-pages
-          FOLDER: ''
+          FOLDER: build
