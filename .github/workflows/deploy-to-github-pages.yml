@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment:
-      name: production_environment
+      name: github-pages
 
     steps:
       - name: Checkout
