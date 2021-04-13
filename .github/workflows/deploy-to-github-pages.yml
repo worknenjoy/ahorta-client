@@ -1,4 +1,5 @@
 name: Build & Deploy
+environment: github-pages
 
 on:
   push:
@@ -17,17 +18,12 @@ jobs:
         run: yarn
 
       - name: Build site
-        env:
-          REACT_APP_SECRET: ${{ secrets.github-pages.REACT_APP_SECRET }}
-          SECRET: ${{ secrets.github-pages.SECRET }}
         run: yarn react-scripts build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REACT_APP_SECRET: ${{ secrets.github-pages.REACT_APP_SECRET }}
-          SECRET: ${{ secrets.github-pages.SECRET }}
           BASE_BRANCH: master
           BRANCH: gh-pages
           FOLDER: build
