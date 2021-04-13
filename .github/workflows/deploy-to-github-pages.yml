@@ -19,7 +19,7 @@ jobs:
         run: yarn
 
       - name: Build site
-        run: yarn react-scripts build
+        run: REACT_APP_SECRET=${{ secrets.REACT_APP_SECRET }} && SECRET=${{ secrets.SECRET }} && yarn react-scripts build
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@master
