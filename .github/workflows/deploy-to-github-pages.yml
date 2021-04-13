@@ -1,0 +1,29 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Installing packages
+        run: yarn
+
+      - name: Build site
+        run: yarn react-scripts build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REACT_APP_SECRET: ${{ secrets.REACT_APP_SECRET }}
+          BASE_BRANCH: main
+          BRANCH: gh-pages
+          FOLDER: dist
