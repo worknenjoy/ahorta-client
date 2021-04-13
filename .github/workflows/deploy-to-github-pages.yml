@@ -1,5 +1,4 @@
 name: Build & Deploy
-environment: github-pages
 
 on:
   push:
@@ -9,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: production_environment
 
     steps:
       - name: Checkout
