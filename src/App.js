@@ -9,8 +9,6 @@ import Routes from './routes'
 import { lightGreen, green } from '@material-ui/core/colors'
 import reducers from './reducers'
 
-console.log('environment', process.env.REACT_APP_SECRET)
-
 const theme = createMuiTheme({
   palette: {
     primary: {
