@@ -204,7 +204,7 @@ class Main extends Component {
                             </Button>
                           </div>
                         </div>
-                        <img width='400' src={mainImage} alt='sample image' />
+                        <img width='400' src={mainImage} alt='a sample plant using Ahorta' />
                       </div>
                     </Paper>
                 </Grid>
