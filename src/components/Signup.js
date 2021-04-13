@@ -156,7 +156,7 @@ class Signup extends Component {
 
   render() {
 
-    const { classes, history } = this.props;
+    const { classes } = this.props;
     const { loading } = this.state;
 
     return (

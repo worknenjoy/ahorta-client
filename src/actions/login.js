@@ -4,11 +4,6 @@ import { host } from '../url'
 
 import Auth from '../modules/Auth'
 
-const headers = {
-  'Authorization': `Bearer ${Auth.getToken()}`,
-  'Content-Type': 'application/json'
-}
-
 const loginActionNames = genActionNames('user', ['logged', 'login', 'logout'])
 const loginActions = genPlainActions('user',['logged', 'login', 'logout', 'register'])
 

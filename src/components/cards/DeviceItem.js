@@ -81,7 +81,7 @@ class DeviceItem extends Component {
   }
 
   render() {
-    const { classes, user, ssid, deviceId, name, onAction, onEdit, lastReading, minValue, maxValue, threshold, at } = this.props;
+    const { classes, user, name, onAction, onEdit, lastReading, minValue, maxValue, threshold, at } = this.props;
     const lastReadingPercent = Percent(lastReading, minValue, maxValue)
 
     return (

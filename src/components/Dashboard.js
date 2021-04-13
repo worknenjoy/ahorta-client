@@ -8,7 +8,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
-import Slider from '@material-ui/core/Slider';
 import Avatar from '@material-ui/core/Avatar';
 import SimpleLineChart from './SimpleLineChart';
 import Loading from './common/Loading';
@@ -18,11 +17,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import SectionHeader from './typo/SectionHeader';
 
-import ImageCard from './cards/ImageCard'
 import Topbar from './Topbar';
-import SensorChart from './SensorChart'
 
 import { host } from '../url'
 import Percent from '../modules/Percent'
@@ -127,9 +123,6 @@ class Dashboard extends Component {
     device: {},
     loading: false,
     howItWorksDialog: false,
-    amount: 1,
-    period: 24,
-    start: 10,
     data: []
   };
 
@@ -164,7 +157,7 @@ class Dashboard extends Component {
   }
 
   handleChangeAmount = (event, value) => {
-    this.setState({amount: value, loading: false});
+    this.setState({loading: false});
     const dashboardId = this.props.match.params.id
     axios.put(`${host}/devices/${dashboardId}`,
       {
@@ -187,7 +180,7 @@ class Dashboard extends Component {
   }
 
   handleChangePeriod = (event, value) => {
-    this.setState({period: value, loading: false});
+    this.setState({loading: false});
     this.updateValues();
   }
 
@@ -216,7 +209,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes, loggedUser, history } = this.props;
-    const { amount, period, start, loading, device, howItWorksDialog } = this.state;
+    const { loading, device, howItWorksDialog } = this.state;
     const currentPath = this.props.location.pathname
 
     return (

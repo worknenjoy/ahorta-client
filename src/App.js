@@ -8,7 +8,6 @@ import './App.css';
 import Routes from './routes'
 import { lightGreen, green } from '@material-ui/core/colors'
 import reducers from './reducers'
-import { userActions } from './actions/user'
 
 const theme = createMuiTheme({
   palette: {

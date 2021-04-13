@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, HashRouter, Switch, Redirect } from 'react-router-dom'
+import { Route, HashRouter, Switch } from 'react-router-dom'
 import PrivateRoute from './components/session/private-route'
 import Session from './components/session/session'
 import Dashboard from './containers/dashboard'

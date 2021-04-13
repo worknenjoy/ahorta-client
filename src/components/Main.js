@@ -186,7 +186,7 @@ class Main extends Component {
             <Grid spacing={4} alignItems="center" justify="center" container className={classes.grid}>
               <Grid container item xs={12}>
                   <Grid item xs={12}>
-                    <Paper color='outlined' className={classes.paper} elevation color='primary'>
+                    <Paper className={classes.paper} elevation color='primary'>
                       <div style={{ display: 'flex', alignItem: 'flex-start'}}>
                         <div className={classes.box}>
                           <Typography color='primary' variant='h4' gutterBottom>
@@ -204,7 +204,7 @@ class Main extends Component {
                             </Button>
                           </div>
                         </div>
-                        <img width='400' src={mainImage} />
+                        <img width='400' src={mainImage} alt='sample image' />
                       </div>
                     </Paper>
                 </Grid>

@@ -77,18 +77,8 @@ MySnackbarContentWrapper.propTypes = {
   variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
 };
 
-const useStyles2 = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-}));
-
 export default function CustomizedSnackbars(props) {
   const { variant, open, message, closeNotification } = props
-
-  function handleClick() {
-    closeNotification()
-  }
 
   function handleClose(event, reason) {
     if (reason === 'clickaway') {
@@ -111,7 +101,6 @@ export default function CustomizedSnackbars(props) {
         <MySnackbarContentWrapper
           variant={variant}
           onClose={handleClose}
-          variant={variant}
           message={message}
         />
       </Snackbar>

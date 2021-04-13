@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -137,4 +136,4 @@ class SwipeDialog extends Component {
   }
 }
 
-export default withRouter(withStyles(styles)(SwipeDialog));
+export default withStyles(styles)(SwipeDialog);

@@ -16,7 +16,6 @@ import SectionHeader from './typo/SectionHeader';
 import ProfileMenu from './profile/ProfileMenu'
 import Topbar from './Topbar';
 import DeviceItem from './cards/DeviceItem';
-import Percent from '../modules/Percent';
 import { host } from '../url'
 
 const backgroundShape = require('../images/shape.svg');
@@ -220,7 +219,7 @@ class Profile extends Component {
           <Grid container justify="center">
             <Grid spacing={4} alignItems="center" justify="flex-start" container className={classes.grid}>
               <Grid item xs={3}>
-                <ProfileMenu history={history} onLogout={this.logout} logged={logged} history={history} user={loggedUser && loggedUser.data.user} />
+                <ProfileMenu history={history} onLogout={this.logout} logged={logged} user={loggedUser && loggedUser.data.user} />
               </Grid>
               { data && data.length ? ( 
               <Grid item xs={9}>
