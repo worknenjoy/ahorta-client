@@ -24,6 +24,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REACT_APP_SECRET: ${{ secrets.REACT_APP_SECRET }}
-          BASE_BRANCH: main
+          BASE_BRANCH: master
           BRANCH: gh-pages
           FOLDER: dist
