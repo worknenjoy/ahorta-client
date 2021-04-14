@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.924f3dcc.chunk.css",
+    "main.js": "/static/js/main.96aa3858.chunk.js",
+    "main.js.map": "/static/js/main.96aa3858.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.2eb1ec0c.js",
+    "runtime~main.js.map": "/static/js/runtime~main.2eb1ec0c.js.map",
+    "static/js/2.9b3db439.chunk.js": "/static/js/2.9b3db439.chunk.js",
+    "static/js/2.9b3db439.chunk.js.map": "/static/js/2.9b3db439.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.0f2a1c342d1fbfbb3cc4ea363a37e63c.js": "/precache-manifest.0f2a1c342d1fbfbb3cc4ea363a37e63c.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.924f3dcc.chunk.css.map": "/static/css/main.924f3dcc.chunk.css.map",
+    "static/media/ahorta-experiments-01.jpeg": "/static/media/ahorta-experiments-01.8f2dc4b3.jpeg",
+    "static/media/ahorta-logo.png": "/static/media/ahorta-logo.c6bd6688.png",
+    "static/media/public-image1.jpg": "/static/media/public-image1.3ca0629a.jpg",
+    "static/media/shape.svg": "/static/media/shape.52bb81c9.svg"
+  }
+}
